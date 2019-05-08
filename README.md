@@ -1,0 +1,1 @@
+# Magnetic_rotary_encoding

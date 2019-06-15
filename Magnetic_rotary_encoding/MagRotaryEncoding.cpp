@@ -16,8 +16,8 @@ MagRotaryEncoder::MagRotaryEncoder(int s1, int s2) {  //set sensor pins
 void MagRotaryEncoder::set_poleStateValues(int np, int nu, int sp) {  //set ADC values for the poles (northpole, neutral, southpole)
 	Northpole[0] = np - bound;
 	Northpole[1] = np + bound;
-	Neutral[0] = nu - 50;
-	Neutral[1] = nu + 50;
+	Neutral[0] = nu - 100;
+	Neutral[1] = nu + 100;
 	Southpole[0] = sp - bound;
 	Southpole[1] = sp + bound;
 }

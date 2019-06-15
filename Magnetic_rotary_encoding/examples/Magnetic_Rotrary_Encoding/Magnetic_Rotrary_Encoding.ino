@@ -1,4 +1,5 @@
 #include <MagRotaryEncoding.h>
+
 /*  Example sketch for counting up or down with a magnetic rotary encoding setup
      the primary function detect_rotation() returns a signed integer based on the number of rotation steps detected
 
@@ -6,7 +7,7 @@
      connect led to pin 6
      connect viberation motor/haptics switch circuit to pin 9 (optional)
 
-	 ....Written By Ahmed Oyenuga (Ahmsville 2019).
+	 ....By Ahmsville...
 */
 
 

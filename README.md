@@ -24,8 +24,13 @@ countsteps += knob.detect_rotation();  // function returns a signed integer base
 ```
 
 The code snippet above shows the basic use of the library.
+
 Line 2 shows how to create a magnetic rotary encoding object, and also how you specify the analog pins on the Arduino that will be used to read the ADC values.
-The first line in the setup section is used to set the ADC values that represents the magnetic states discussed above. 
+
+The first line in the setup section is used to set the ADC values that represents the magnetic states discussed in the video and in the pdf. 
+
 The second line in the setup section is optional, only use this function when you have a haptics circuit setup.
+
 In the main loop, the function detect_rotation() returns a signed integer “1” if a clockwise rotation is detected, “-1” if a counter clockwise rotation is detected and a “0” if no rotation is detected.
+
 The function recaliberate_startPosition() does exactly what its name implies, this function should be called before or after the detect_rotation() function.

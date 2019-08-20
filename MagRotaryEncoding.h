@@ -16,8 +16,8 @@ class MagRotaryEncoder {
 private:
 	int state, startposition, sensor1, sensor2, sensor1_pin, sensor2_pin;
 	int Neutral[2], Northpole[2], Southpole[2];
-	int count, bound = 130;
-	int haptics_pin = 0, haptics_duration = 0, haptics_strength = 0;
+	int count, bound = 200;
+	int haptics_pin = 0, haptics_duration = 0, haptics_strength = 0, haptics_ontime, haptics_offtime, haptics_state;
 
 public:
 	MagRotaryEncoder(int s1, int s2);
@@ -31,7 +31,7 @@ public:
 	void rotation_action(int act);
 	void set_bound(int b);
 	void set_haptics(int pin, int duration, int strength);   //use to set haptics variables (arduino pwm pin, duration of haptics(ms), strength from 0-255)
-	void haptics();
+	void haptics(int state);
 };
 
 

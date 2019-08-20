@@ -16,8 +16,8 @@ MagRotaryEncoder::MagRotaryEncoder(int s1, int s2) {  //set sensor pins
 void MagRotaryEncoder::set_poleStateValues(int np, int nu, int sp) {  //set ADC values for the poles (northpole, neutral, southpole)
 	Northpole[0] = np - bound;
 	Northpole[1] = np + bound;
-	Neutral[0] = nu - 100;
-	Neutral[1] = nu + 100;
+	Neutral[0] = nu - 50;
+	Neutral[1] = nu + 50;
 	Southpole[0] = sp - bound;
 	Southpole[1] = sp + bound;
 }
@@ -27,20 +27,22 @@ void MagRotaryEncoder::initialize_encoder() {   //initialize encoder
 }
 
 void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position based on the ADC values
+	haptics(0);
 	get_sensorValue(1);
 	get_sensorValue(2);
-	if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Southpole[0] && sensor2 <= Southpole[1]) {
-		startposition = 1;
+	if (sensor1 >= Northpole[0] && sensor1 <= Northpole[1] && sensor2 >= Neutral[0] && sensor2 <= Neutral[1]) {
+	startposition = 1;
 	}
-	else if (sensor1 >= Northpole[0] && sensor1 <= Northpole[1] && sensor2 >= Neutral[0] && sensor2 <= Neutral[1]) {
+	else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Southpole[0] && sensor2 <= Southpole[1]) {
 		startposition = 2;
 	}
-	else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Northpole[0] && sensor2 <= Northpole[1]) {
+	else if (sensor1 >= Southpole[0] && sensor1 <= Southpole[1] && sensor2 >= Neutral[0] && sensor2 <= Neutral[1]) {
 		startposition = 3;
 	}
-	else if (sensor1 >= Southpole[0] && sensor1 <= Southpole[1] && sensor2 >= Neutral[0] && sensor2 <= Neutral[1]) {
+	else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Northpole[0] && sensor2 <= Northpole[1]) {
 		startposition = 4;
 	}
+	
 	count = 0;
 }
 
@@ -66,61 +68,62 @@ int MagRotaryEncoder::get_currentSensorValue(int sensornum) {
 
 int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding function 
 	//recaliberate_startPosition();
+	
 	if (startposition == 1) {
 		get_sensorValue(1);
-		if (sensor1 >= Northpole[0] && sensor1 <= Northpole[1]) {
+		get_sensorValue(2);
+		if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Northpole[0] && sensor2 <= Northpole[1]) {
 			rotation_action(1);
-			haptics();
-			startposition = 2;
-		}
-		else if (sensor1 >= Southpole[0] && sensor1 <= Southpole[1]) {
-			rotation_action(0);
-			haptics();
+			haptics(1);
 			startposition = 4;
+		}
+		else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Southpole[0] && sensor2 <= Southpole[1]) {
+			rotation_action(0);
+			haptics(1);
+			startposition = 2;
 		}
 	}
 
 	else if (startposition == 2) {
 		get_sensorValue(1);
-		get_sensorValue(2);
-		if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Northpole[0] && sensor2 <= Northpole[1]) {
+		if (sensor1 >= Northpole[0] && sensor1 <= Northpole[1]) {
 			rotation_action(1);
-			haptics();
-			startposition = 3;
-		}
-		else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Southpole[0] && sensor2 <= Southpole[1]) {
-			rotation_action(0);
-			haptics();
+			haptics(1);
 			startposition = 1;
+		}
+		else if (sensor1 >= Southpole[0] && sensor1 <= Southpole[1]) {
+			rotation_action(0);
+			haptics(1);
+			startposition = 3;
 		}
 	}
 
 	else if (startposition == 3) {
 		get_sensorValue(1);
-		if (sensor1 >= Southpole[0] && sensor1 <= Southpole[1]) {
+		get_sensorValue(2);
+		if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Southpole[0] && sensor2 <= Southpole[1]) {
 			rotation_action(1);
-			haptics();
-			startposition = 4;
-		}
-		else if (sensor1 >= Northpole[0] && sensor1 <= Northpole[1]) {
-			rotation_action(0);
-			haptics();
+			haptics(1);
 			startposition = 2;
+		}
+		else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Northpole[0] && sensor2 <= Northpole[1]) {
+			rotation_action(0);
+			haptics(1);
+			startposition = 4;
 		}
 	}
 
 	else if (startposition == 4) {
 		get_sensorValue(1);
-		get_sensorValue(2);
-		if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Southpole[0] && sensor2 <= Southpole[1]) {
+		if (sensor1 >= Southpole[0] && sensor1 <= Southpole[1]) {
 			rotation_action(1);
-			haptics();
-			startposition = 1;
-		}
-		else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 >= Northpole[0] && sensor2 <= Northpole[1]) {
-			rotation_action(0);
-			haptics();
+			haptics(1);
 			startposition = 3;
+		}
+		else if (sensor1 >= Northpole[0] && sensor1 <= Northpole[1]) {
+			rotation_action(0);
+			haptics(1);
+			startposition = 1;
 		}
 	}
 	else {
@@ -152,8 +155,23 @@ void MagRotaryEncoder::set_haptics(int pin, int duration, int strength) {  //use
 	haptics_strength = strength;
 }
 
-void MagRotaryEncoder::haptics() {   //viberation feedback function
+void MagRotaryEncoder::haptics(int state) {   //viberation feedback function
+	if (state == 1) {
+		analogWrite(haptics_pin, haptics_strength);
+		haptics_ontime = millis();
+		haptics_state = 1;
+	}
+	else {
+		haptics_offtime = millis();
+		if (((haptics_offtime - haptics_ontime) >= haptics_duration) && haptics_state == 1) {
+			analogWrite(haptics_pin, 0);
+			haptics_state = 0;
+		}
+
+	}
+	/*
 	analogWrite(haptics_pin, haptics_strength);
 	delay(haptics_duration);
 	analogWrite(haptics_pin, 0);
+	*/
 }

@@ -17,7 +17,7 @@ MagRotaryEncoder knob = MagRotaryEncoder(A0, A1); // create new encoding instanc
 int countsteps = 0;
 
 void setup() {
-  knob.set_poleStateValues(250, 512, 750); // set the peak ADC values for the (northpole, neutralstate, southpole)
+  knob.set_poleStateValues(256, 512, 768); // set the peak ADC values for the (northpole, neutralstate, southpole)
   knob.set_haptics(9, 50, 255); //set haptic feedback variables (arduino pwm pin, duration of haptics(ms), pwn strength from 0-255)
   knob.initialize_encoder();
   Serial.begin(9600);

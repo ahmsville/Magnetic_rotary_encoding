@@ -4,18 +4,44 @@
 /*  Example sketch for counting up or down with a magnetic rotary encoding setup
      the primary function detect_rotation() returns a signed integer based on the number of rotation steps detected
 
-     connect signal pin from hall effect sensors to A0 & A1 (ENC-1, ENC-2)
-     connect CT1 to pin 2 and CT2 to pin 3 for capacitive touch
-     connect LED to pin 5
+     connect signal pin from hall effect sensors to A5 & A6 (ENC-1, ENC-2)
+     connect Interrupt signal (EINT1 ,EINT2) pin from encoder to pin 2 & 3 or any other interrupt enabled pins
+     connect CT1 to pin 5 and CT2 to pin 6 for capacitive touch
+     connect LED to pin 4
      connect viberation motor/haptics switch circuit to pin 9 (optional)
 
    ....By Ahmsville...
 */
 
-
-
-MagRotaryEncoder knob = MagRotaryEncoder(A0, A1); // create new encoding object and specify the arduino pins connected to the hall effect sensors
+//Interrupt based detection
+MagRotaryEncoder knob = MagRotaryEncoder(A5, A6, 2, 3); // create new encoding instance and specify the arduino pins connected to the hall effect sensors, and the pins use for interrupts
 AdvCapTouch touchpad  = AdvCapTouch();  //create a new captouch object
+
+volatile bool activesensorInterrupt = 0; //used fo switching active ISR
+
+void ISR1 () {
+  if (activesensorInterrupt == 0) { //sensor 1 interrupt is active.
+    knob.sensor1_INT();
+    activesensorInterrupt = !activesensorInterrupt;
+  }
+}
+void ISR2 () {
+  if (activesensorInterrupt == 1) { //sensor 1 interrupt is active.
+    knob.sensor2_INT();
+    activesensorInterrupt = !activesensorInterrupt;
+  }
+}
+
+
+void setinterrupt() {
+  pinMode(knob.get_sensorINTpin(1), INPUT);
+  attachInterrupt(digitalPinToInterrupt(knob.get_sensorINTpin(1)), ISR1, RISING);
+
+  pinMode(knob.get_sensorINTpin(2), INPUT);
+  attachInterrupt(digitalPinToInterrupt(knob.get_sensorINTpin(2)), ISR2, RISING);
+}
+
+
 int touchtype;
 
 int countsteps = 0, retstep, COUNT = 0;
@@ -24,7 +50,7 @@ int encoderRes = 60;
 
 int detectionMode = 1;
 
-#define DATA_PIN    5
+#define DATA_PIN    4
 #define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB
 #define NUM_LEDS    15
@@ -35,11 +61,12 @@ CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
 
 void setup() {
+  setinterrupt();
   knob.set_haptics(9, 50, 255); //set haptic feedback variables (arduino pwm pin, duration of haptics(ms), pwn strength from 0-255)
   knob.initialize_encoder();
-  knob.set_resolution(90); //works with the detect_rotationHR() function
+  //knob.set_resolution(90); //uncomment if your using the detect_rotationHR() function
 
-  touchpad.set_capTouchPins(3, 2, 0, 0, 0); //set arduino pins associated with the pads (sendpin, receivepin1, receivepin2, receivepin3, receivepin4) this example uses just one pad.
+  touchpad.set_capTouchPins(6, 5, 0, 0, 0); //set arduino pins associated with the pads (sendpin, receivepin1, receivepin2, receivepin3, receivepin4) this example uses just one pad.
   touchpad.set_haptics(9, 40, 255); //set haptic feedback variables (arduino pwm pin, duration of haptics(ms), pwn strength from 0-255)------(optional)
   touchpad.initialize_capTouch(1);
 

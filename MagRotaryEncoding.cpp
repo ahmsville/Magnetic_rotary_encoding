@@ -615,9 +615,9 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 		if (INTProcessed) {
 			//calculate rate of rotation
 			if (count != 0) {
-
+				haptics(1);
 				if (rotationrate > 0) {  //avoid negative values
-
+					
 
 					if (rotationrate >= timetomultiply) { //not fast anough for multiplier
 
@@ -733,7 +733,7 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 			}
 			//calculate rate of rotation
 			if (count != 0) {
-
+				haptics(1);
 				if (rotationrate > 0) {  //avoid negative values
 
 

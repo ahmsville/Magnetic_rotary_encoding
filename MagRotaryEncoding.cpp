@@ -12,54 +12,58 @@ volatile bool sleepmode = false;
 
 
 
-void MagRotaryEncoder::sensor1_INT() {
+int MagRotaryEncoder::sensor1_INT() {
+	
 	if (!use_extended_resolution) { //extended res is not used
 		get_sensorValue(2); //read sensor 2
+		
 		//set new startposition
 		if (sensor2 != 0) { //value read successfully, process here
-			INTProcessed = true;
+			
 			if (sensor2 > Neutral[1]) { //sensor1 = neutral , sensor2 = south
 				startposition = 2;
 				prevsensor1 = Mid;
-
+				INTProcessed = true;
 			}
 
 			else if (sensor2 < Neutral[0]) { //sensor1 = neutral , sensor2 = north
 				startposition = 4;
 				prevsensor1 = Mid;
+				INTProcessed = true;
 			}
 			//keep count
 
 			rotationrate = millis() - timetracker;  //rotation step rate
-			if (startposition == 2 || startposition == 3) { //new startposition is not == 1 or 4
-				if ((startposition - prevstartposition) > 0) { //clockwise
+			if (startposition == 2) { //new startposition is not == 1 or 4
+				if (prevstartposition == 1) { //clockwise
 					count++;
 				}
-				else { //counterclockwise
+				else if (prevstartposition == 3) { //counterclockwise
 					count--;
 				}
 				prevstartposition = startposition;
 			}
-			else if (startposition == 1) { // new startposition == 1
-				if (prevstartposition == 4) { //clockwise
-					count++;
-				}
-				else { //counterclockwise
-					count--;
-				}
-				prevstartposition = startposition;
-			}
+			
 			else if (startposition == 4) { // new startposition == 4
 				if (prevstartposition == 3) { //clockwise
 					count++;
 				}
-				else { //counterclockwise
+				else if (prevstartposition == 1) { //counterclockwise
 					count--;
 				}
 				prevstartposition = startposition;
 			}
+			prevstartposition = startposition;
 			timetracker = millis();
-
+			//SerialUSB.println(startposition);
+			/*
+			SerialUSB.print("fired1");
+			SerialUSB.print("\t");
+			SerialUSB.print(count);
+			SerialUSB.print("\t");
+			SerialUSB.print(sensor2);
+			*/
+			return 2;
 		}
 		else { //process in loop
 			INTProcessed = false;
@@ -67,39 +71,43 @@ void MagRotaryEncoder::sensor1_INT() {
 			INT2fired = false;
 			rotationrate = millis() - timetracker;  //rotation step rate
 			timetracker = millis();
+			return 2;
 		}
 	}
 	else {
 		INT1fired = true;
 		INT2fired = false;
 	}
+	return 2;
 }
 
-void MagRotaryEncoder::sensor2_INT() {
-
+int MagRotaryEncoder::sensor2_INT() {
+	
 	if (!use_extended_resolution) { //extended res is not used
 		get_sensorValue(1); //read sensor 1
+		
 		//set new startposition
 		if (sensor1 != 0) { //value read successfully, process here
-			INTProcessed = true;
+			
 			if (sensor1 > Neutral[1]) { //sensor2 = neutral , sensor1 = south
 				startposition = 3;
 				prevsensor2 = Mid;
-
+				INTProcessed = true;
 			}
 
 			else if (sensor1 < Neutral[0]) { //sensor2 = neutral , sensor1 = north
 				startposition = 1;
 				prevsensor2 = Mid;
+				INTProcessed = true;
 			}
 			//keep count
 
 			rotationrate = millis() - timetracker;  //rotation step rate
-			if (startposition == 2 || startposition == 3) { //new startposition is not == 1 or 4
-				if ((startposition - prevstartposition) > 0) { //clockwise
+			if (startposition == 3) { //new startposition is not == 1 or 4
+				if (prevstartposition == 2) { //clockwise
 					count++;
 				}
-				else { //counterclockwise
+				else if (prevstartposition == 4) { //counterclockwise
 					count--;
 				}
 				prevstartposition = startposition;
@@ -108,21 +116,22 @@ void MagRotaryEncoder::sensor2_INT() {
 				if (prevstartposition == 4) { //clockwise
 					count++;
 				}
-				else { //counterclockwise
+				else if (prevstartposition == 2) { //counterclockwise
 					count--;
 				}
 				prevstartposition = startposition;
 			}
-			else if (startposition == 4) { // new startposition == 4
-				if (prevstartposition == 3) { //clockwise
-					count++;
-				}
-				else { //counterclockwise
-					count--;
-				}
-				prevstartposition = startposition;
-			}
+			prevstartposition = startposition;
 			timetracker = millis();
+			//SerialUSB.println(startposition);
+			/*
+			SerialUSB.print("fired2");
+			SerialUSB.print("\t");
+			SerialUSB.print(count);
+			SerialUSB.print("\t");
+			SerialUSB.print(sensor1);
+			*/
+			return 1;
 		}
 		else { //process in loop
 			INTProcessed = false;
@@ -130,12 +139,14 @@ void MagRotaryEncoder::sensor2_INT() {
 			INT1fired = false;
 			rotationrate = millis() - timetracker;  //rotation step rate
 			timetracker = millis();
+			return 1;
 		}
 	}
 	else {
 		INT2fired = true;
 		INT1fired = false;
 	}
+	return 1;
 }
 
 
@@ -145,15 +156,21 @@ void MagRotaryEncoder::sensor2_INT() {
 
 MagRotaryEncoder::MagRotaryEncoder(int s1, int s2) {  //set sensor pins
 	sensor1_pin = s1;
+	//pinMode(s1, INPUT);
 	sensor2_pin = s2;
+	//pinMode(s2, INPUT);
 	useInterrupt = false;
 
 }
 MagRotaryEncoder::MagRotaryEncoder(int s1, int s2, int s1INTpin, int s2INTpin) {  //set sensor pins
 	sensor1_pin = s1;
+	//pinMode(s1, INPUT);
 	sensor2_pin = s2;
+	//pinMode(s2, INPUT);
 	SensorINTpin[0] = s1INTpin;
+	//pinMode(s1INTpin, INPUT);
 	SensorINTpin[1] = s2INTpin;
+	//pinMode(s2INTpin, INPUT);
 	useInterrupt = true;
 
 }
@@ -211,28 +228,28 @@ void MagRotaryEncoder::initialize_encoder() {   //initialize encoder
 void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position based on the ADC values
 	haptics(0);
 	if (!useInterrupt) { //interrupt detection is not used
-		if (sensor1 < Neutral[0] && sensor2 >= Neutral[0] && sensor2 <= Neutral[1]) {  //sensor1 = north , sensor2 = neutral
+		if (sensor1 < Neutral[0] && sensor2 >= (Neutral[0]) && sensor2 <= (Neutral[1])) {  //sensor1 = north , sensor2 = neutral
 			startposition = 1;
 			if (prevstartposition != startposition) { //if startposition didnt change
 				prevsensor2 = Mid;
 				prevstartposition = startposition;
 			}
 		}
-		else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 > Neutral[1]) { //sensor1 = neutral , sensor2 = south
+		else if (sensor1 >= (Neutral[0]) && sensor1 <= (Neutral[1]) && sensor2 > Neutral[1]) { //sensor1 = neutral , sensor2 = south
 			startposition = 2;
 			if (prevstartposition != startposition) { //if startposition didnt change
 				prevsensor1 = Mid;
 				prevstartposition = startposition;
 			}
 		}
-		else if (sensor1 > Neutral[1] && sensor2 >= Neutral[0] && sensor2 <= Neutral[1]) { //sensor1 = south , sensor2 = neutral
+		else if (sensor1 > Neutral[1] && sensor2 >= (Neutral[0]) && sensor2 <= (Neutral[1])) { //sensor1 = south , sensor2 = neutral
 			startposition = 3;
 			if (prevstartposition != startposition) { //if startposition didnt change
 				prevsensor2 = Mid;
 				prevstartposition = startposition;
 			}
 		}
-		else if (sensor1 >= Neutral[0] && sensor1 <= Neutral[1] && sensor2 < Neutral[0]) { //sensor1 = neutral , sensor2 = north
+		else if (sensor1 >= (Neutral[0]) && sensor1 <= (Neutral[1]) && sensor2 < Neutral[0]) { //sensor1 = neutral , sensor2 = north
 			startposition = 4;
 			if (prevstartposition != startposition) { //if startposition didnt change
 				prevsensor1 = Mid;
@@ -272,6 +289,49 @@ void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position
 			}
 
 		}
+		else if (startposition == 0){
+			get_sensorValue(1); //read sensor 1
+			get_sensorValue(2); //read sensor 2
+			int comp1 = sensor1 - 512;
+			int comp2 = sensor2 - 512;
+			if (comp1 < 0)
+			{
+				comp1 = comp1 * (-1);
+			}
+			if (comp2 < 0)
+			{
+				comp2 = comp2 * (-1);
+			}
+			if (comp1 < comp2)//sensor1 is in neutral
+			{
+				//set new startposition
+				if (sensor2 > Neutral[1]) { //sensor1 = neutral , sensor2 = south
+					startposition = 2;
+					prevstartposition = 2;
+					prevsensor1 = Mid;
+				}
+				else if (sensor2 < Neutral[0]) { //sensor1 = neutral , sensor2 = north
+					startposition = 4;
+					prevstartposition = 4;
+					prevsensor1 = Mid;
+				}
+			}
+			else if (comp2 < comp1) //sensor2 is in neutral
+			{
+				//set new startposition
+				if (sensor1 > Neutral[1]) { //sensor2 = neutral , sensor1 = south
+					startposition = 3;
+					prevstartposition = 3;
+					prevsensor2 = Mid;
+				}
+				else if (sensor1 < Neutral[0]) { //sensor2 = neutral , sensor1 = north
+					startposition = 1;
+					prevstartposition = 1;
+					prevsensor2 = Mid;
+				}
+			}
+			//SerialUSB.println(startposition);
+		}
 	}
 
 	count = 0;
@@ -301,8 +361,136 @@ int MagRotaryEncoder::get_currentSensorValue(int sensornum) {
 	}
 }
 
+int MagRotaryEncoder::get_encResCount(int retstep) {
+	//keep counter value in the encoder's resolution range
+	if (retstep < 0) {
+		for (int i = 0; i > retstep; i--) {
+			if ((encoderPosition - 1) >= 1) {
+				encoderPosition = encoderPosition - 1;
+			}
+			else if ((encoderPosition - 1) < 1) {
+				encoderPosition = encoderResolution;
+			}
+		}
+	}
+	else if (retstep > 0) {
+		for (int i = 0; i < retstep; i++) {
+			if ((encoderPosition + 1) <= encoderResolution) {
+				encoderPosition = encoderPosition + 1;
+			}
+			else if ((encoderPosition + 1) > encoderResolution) {
+				encoderPosition = 1;
+			}
+		}
+	}
+	//Serial.println(encoderPosition);
+	//validate stored start point data
+	//SerialUSB.print("\t");
+	//SerialUSB.println(encoderPosition);
+	if (encoderPosition == 1) {
+		/*
+		SerialUSB.print(storedstartposition);
+		SerialUSB.print("\t");
+		SerialUSB.print(startposition);
+		SerialUSB.print("\t");
+		SerialUSB.print(storedsensor1state);
+		SerialUSB.print("\t");
+		SerialUSB.print(sensor1);
+		SerialUSB.print("\t");
+		SerialUSB.print(storedsensor2state);
+		SerialUSB.print("\t");
+		SerialUSB.println(sensor2);
+		*/
+		int passmark = 0;
+		inSync = false;
+		if (storedstartposition == startposition)
+		{
+			passmark += 1;
+			if (startposition == 1)
+			{
+				if (storedsensor1state > Neutral[1]  && sensor1 > Neutral[1] || storedsensor1state < Neutral[0] && sensor1 < Neutral[0])
+				{
+					passmark += 1;
+				}
+			}
+			else if (startposition == 2)
+			{
+				if (storedsensor2state > Neutral[1] && sensor2 > Neutral[1] || storedsensor2state < Neutral[0] && sensor2 < Neutral[0])
+				{
+					passmark += 1;
+				}
+			}
+			else if (startposition == 3)
+			{
+				if (storedsensor1state > Neutral[1] && sensor1 > Neutral[1] || storedsensor1state < Neutral[0] && sensor1 < Neutral[0])
+				{
+					passmark += 1;
+				}
+			}
+			else if (startposition == 4)
+			{
+				if (storedsensor2state > Neutral[1] && sensor2 > Neutral[1] || storedsensor2state < Neutral[0] && sensor2 < Neutral[0])
+				{
+					passmark += 1;
+				}
+			}
+		}
+		if (passmark == 2)
+		{
+			inSync = true;
+		}
+	}
+	
+	if (inSync)
+	{
+		return encoderPosition;
+	}
+	else {
+		encoderPosition = -1;
+		return encoderPosition;
+	}
+	
+}
+
+void MagRotaryEncoder::set_encoderResolution(int res) {
+	encoderResolution = res;
+	storedstartposition = 0;
+	storedsensor1state = 0;
+	storedsensor2state = 0;
+	inSync = false;
+}
+
+int MagRotaryEncoder::setToStart() {
+	encoderPosition = 1;
+	
+		get_sensorValue(1);
+		get_sensorValue(2);
+		recaliberate_startPosition();
+		count = 0;
+	
+		
+		storedstartposition = startposition;
+		storedsensor1state = sensor1;
+		storedsensor2state = sensor2;
+		inSync = true;
+		//SerialUSB.println(startposition);
+	/*
+	SerialUSB.print(storedstartposition);
+	SerialUSB.print("\t");
+	SerialUSB.print(storedsensor1state);
+	SerialUSB.print("\t");
+	SerialUSB.println(storedsensor2state);
+	*/
+	return encoderPosition;
+}
 
 int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding function
+	
+	
+		
+
+	
+
 	if (!useInterrupt) { //interrupt detection is not used
 
 		if (startposition == 1) {
@@ -312,12 +500,12 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 				if (sensor2 < northRegion) {
 					rotation_action(0);
 					haptics(1);
-					startposition = 0;//4;
+					//startposition = 0;//4;
 				}
 				else if (sensor2 > southRegion) {
 					rotation_action(1);
 					haptics(1);
-					startposition = 0;//2;
+					//startposition = 0;//2;
 				}
 			}
 
@@ -330,12 +518,12 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 				if (sensor1 < northRegion) {
 					rotation_action(0);
 					haptics(1);
-					startposition = 0;//1;
+					//startposition = 0;//1;
 				}
 				else if (sensor1 > southRegion) {
 					rotation_action(1);
 					haptics(1);
-					startposition = 0;//3;
+					//startposition = 0;//3;
 				}
 			}
 		}
@@ -347,12 +535,12 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 				if (sensor2 > southRegion) {
 					rotation_action(0);
 					haptics(1);
-					startposition = 0;//2;
+					//startposition = 0;//2;
 				}
 				else if (sensor2 < northRegion) {
 					rotation_action(1);
 					haptics(1);
-					startposition = 0;//4;
+					//startposition = 0;//4;
 				}
 			}
 		}
@@ -364,12 +552,12 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 				if (sensor1 > southRegion) {
 					rotation_action(0);
 					haptics(1);
-					startposition = 0;//3;
+					//startposition = 0;//3;
 				}
 				else if (sensor1 < northRegion) {
 					rotation_action(1);
 					haptics(1);
-					startposition = 0;//1;
+					//startposition = 0;//1;
 				}
 			}
 		}
@@ -379,25 +567,73 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 			get_sensorValue(2);
 		}
 
-		tempcount = count;
-		recaliberate_startPosition();
-		return tempcount;
+		
+		
+
+		if (count != 0) {
+			haptics(1);
+			
+			if (encoderResolution > 0 && inSync)
+			{
+				tempcount = count;
+				recaliberate_startPosition();
+				tempcount = get_encResCount(tempcount);
+			}
+			else {
+				tempcount = count;
+				recaliberate_startPosition();
+			}
+			return tempcount;
+		}
+		else {
+			tempcount = count;
+			recaliberate_startPosition();
+			return tempcount;
+		}
+		
 	}
 	else {
 		if (INTProcessed) { //processed in interrupt
+			
 			if (count != 0) {
-				//SerialUSB.print(prevstartposition);
-				//SerialUSB.print("\t");
-				//SerialUSB.print(count);
-				//SerialUSB.print("\t");
+				/*
+				SerialUSB.print(sensor1);
+				SerialUSB.print("\t");
+				SerialUSB.print(prevsensor1);
+				SerialUSB.print("\t");
+				SerialUSB.print(sensor2);
+				SerialUSB.print("\t");
+				SerialUSB.print(prevsensor2);
+				SerialUSB.print("\t");
+				SerialUSB.print(startposition);
+				SerialUSB.print("\t");
+
+				SerialUSB.println(count);
+				*/
 				haptics(1);
-				tempcount = count;
-				recaliberate_startPosition();
+
+				if (encoderResolution > 0 && inSync)
+				{
+					tempcount = count;
+					//SerialUSB.print(count);
+					//SerialUSB.print("\t");
+
+					
+					//recaliberate_startPosition();
+					tempcount = get_encResCount(tempcount);
+					//SerialUSB.print(tempcount);
+				}
+				else {
+					tempcount = count;
+					//recaliberate_startPosition();
+				}
+				count = 0;
 				return tempcount;
 			}
 			else {
-				recaliberate_startPosition();
-				return count;
+				tempcount = count;
+				//recaliberate_startPosition();
+				return tempcount;
 			}
 		}
 		else {
@@ -485,15 +721,27 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 				}
 				INT2fired = false;
 			}
+			
+
 			if (count != 0) {
 				haptics(1);
-				tempcount = count;
-				recaliberate_startPosition();
+
+				if (encoderResolution > 0 && inSync)
+				{
+					tempcount = count;
+					recaliberate_startPosition();
+					tempcount = get_encResCount(tempcount);
+				}
+				else {
+					tempcount = count;
+					recaliberate_startPosition();
+				}
 				return tempcount;
 			}
 			else {
+				tempcount = count;
 				recaliberate_startPosition();
-				return count;
+				return tempcount;
 			}
 		}
 	}
@@ -1098,6 +1346,8 @@ void MagRotaryEncoder::set_resolution(int percent) {
 	}
 
 }
+
+
 
 
 

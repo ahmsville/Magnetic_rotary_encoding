@@ -31,6 +31,9 @@ private:
 	int storedsensor1state, storedsensor2state;
 	bool inSync = false;
 
+	float alpha = 0.1;
+	int prevsmoothsensor1 = 0, prevsmoothsensor2 = 0;
+
 	bool useInterrupt = false;
 	bool interruptFired = false;
 

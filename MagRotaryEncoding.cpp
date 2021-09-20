@@ -379,10 +379,18 @@ void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position
 int MagRotaryEncoder::get_sensorValue(int sensornum) {
 	if (sensornum == 1) {
 		sensor1 = adcVal.Read(sensor1_pin);
+		if (use_extended_resolution) {
+			sensor1 = (sensor1 * alpha) + (prevsmoothsensor1 * (1 - alpha));
+			prevsmoothsensor1 = sensor1;
+		}
 		return sensor1;
 	}
 	else if (sensornum == 2) {
 		sensor2 = adcVal.Read(sensor2_pin);
+		if (use_extended_resolution) {
+			sensor2 = (sensor2 * alpha) + (prevsmoothsensor2 * (1 - alpha));
+			prevsmoothsensor2 = sensor2;
+		}
 		return sensor2;
 	}
 }
@@ -657,18 +665,25 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 			}
 			haptics(1);
 
-			if (encoderResolution > 0 && inSync)
+			if (encoderResolution > 0)
 			{
-				tempcount = count;
-				recaliberate_startPosition();
-				tempcount = get_encResCount(tempcount);
+				if (inSync)
+				{
+					tempcount = count;
+					recaliberate_startPosition();
+					tempcount = get_encResCount(tempcount);
+					//SerialUSB.print(tempcount);
+				}
+				else {
+					tempcount = -1;
+				}
+
 			}
 			else {
 				tempcount = count;
 				recaliberate_startPosition();
 			}
-			
-			
+			count = 0;
 			return tempcount;
 		}
 		else {
@@ -686,14 +701,6 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 				{
 					count *= -1;
 				}
-				/*
-				
-				SerialUSB.print("count == ");
-				SerialUSB.print("\t");
-				SerialUSB.print(startposition);
-				SerialUSB.print("\t");
-				SerialUSB.println(count);
-				*/
 				haptics(1);
 
 				if (encoderResolution > 0)
@@ -701,10 +708,6 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 					if (inSync)
 					{
 						tempcount = count;
-						//SerialUSB.print(count);
-						//SerialUSB.print("\t");
-
-
 						//recaliberate_startPosition();
 						tempcount = get_encResCount(tempcount);
 						//SerialUSB.print(tempcount);
@@ -723,7 +726,7 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 			}
 			else {
 				tempcount = count;
-				recaliberate_startPosition();
+				//recaliberate_startPosition();
 				return 0;
 			}
 		}
@@ -796,15 +799,6 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 				{
 					count *= -1;
 				}
-				/*
-				SerialUSB.print("count == ");
-				SerialUSB.print("\t");
-				SerialUSB.print(prevstartposition);
-				SerialUSB.print("\t");
-				SerialUSB.print(startposition);
-				SerialUSB.print("\t");
-				SerialUSB.println(count);
-				*/
 				haptics(1);
 
 				if (encoderResolution > 0)
@@ -812,11 +806,6 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 					if (inSync)
 					{
 						tempcount = count;
-						//SerialUSB.print(count);
-						//SerialUSB.print("\t");
-
-
-						//recaliberate_startPosition();
 						tempcount = get_encResCount(tempcount);
 						//SerialUSB.print(tempcount);
 					}
@@ -845,6 +834,7 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 }
 
 int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding function
+
 	if (!useInterrupt) { //interrupt detection is not used
 		get_sensorValue(1);
 		get_sensorValue(2);
@@ -852,11 +842,15 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 		if (startposition == 1) {
 			if (newstate == 2)
 			{
+				rotationrate = millis() - timetracker;
+				timetracker = millis();
 				rotation_action(1);
 				haptics(1);
 			}
 			else if (newstate == 4)
 			{
+				rotationrate = millis() - timetracker;
+				timetracker = millis();
 				rotation_action(0);
 				haptics(1);
 			}
@@ -865,11 +859,15 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 		else if (startposition == 2) {
 			if (newstate == 3)
 			{
+				rotationrate = millis() - timetracker;
+				timetracker = millis();
 				rotation_action(1);
 				haptics(1);
 			}
 			else if (newstate == 1)
 			{
+				rotationrate = millis() - timetracker;
+				timetracker = millis();
 				rotation_action(0);
 				haptics(1);
 			}
@@ -878,11 +876,15 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 		else if (startposition == 3) {
 			if (newstate == 4)
 			{
+				rotationrate = millis() - timetracker;
+				timetracker = millis();
 				rotation_action(1);
 				haptics(1);
 			}
 			else if (newstate == 2)
 			{
+				rotationrate = millis() - timetracker;
+				timetracker = millis();
 				rotation_action(0);
 				haptics(1);
 			}
@@ -891,90 +893,80 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 		else if (startposition == 4) {
 			if (newstate == 1)
 			{
+				rotationrate = millis() - timetracker;
+				timetracker = millis();
 				rotation_action(1);
 				haptics(1);
 			}
 			else if (newstate == 3)
 			{
+				rotationrate = millis() - timetracker;
+				timetracker = millis();
 				rotation_action(0);
 				haptics(1);
 			}
 		}
 
-
-		//calculate rate of rotation
 		if (count != 0) {
-			rotationrate = millis() - timetracker;  //rotation step rate
+			
+			if (invertcount)
+			{
+				count *= -1;
+			}
+			haptics(1);
 			if (rotationrate > 0) {  //avoid negative values
-
-
-				if (rotationrate >= timetomultiply) { //not fast anough for multiplier
-					timetracker = millis();
-					tempcount = count;
-					recaliberate_startPosition();
-					return tempcount;
-				}
-				else {
+				if (rotationrate < timetomultiply) { //not fast anough for multiplier
 					float calcmul = 1 - ((float)rotationrate / (float)timetomultiply);
-					tempcount = count * multiplier * calcmul;
-					recaliberate_startPosition();
-					timetracker = millis();
-					return tempcount;
+					count = count * multiplier * calcmul;
+					//timetracker = millis();
 				}
 
 			}
-			else {
-				rotationrate = 0;
-				timetracker = millis();
-			}
-
+			tempcount = count;
+			recaliberate_startPosition();
+			
+			count = 0;
+			return tempcount;
 		}
 		else {
 			tempcount = count;
 			recaliberate_startPosition();
-			return tempcount;
+			return 0;
 		}
-		tempcount = count;
-		recaliberate_startPosition();
-		return tempcount;
+
 	}
 	else {
-		if (INTProcessed) {
-			//calculate rate of rotation
+		if (INTProcessed) { //processed in interrupt
+
 			if (count != 0) {
+			
+				if (invertcount)
+				{
+					count *= -1;
+				}
 				haptics(1);
 				if (rotationrate > 0) {  //avoid negative values
-
-
-					if (rotationrate >= timetomultiply) { //not fast anough for multiplier
-
-						tempcount = count;
-						recaliberate_startPosition();
-						return tempcount;
-					}
-					else {
+					if (rotationrate < timetomultiply) { //not fast anough for multiplier
 						float calcmul = 1 - ((float)rotationrate / (float)timetomultiply);
-						tempcount = count * multiplier * calcmul;
-						recaliberate_startPosition();
-
-						return tempcount;
+						count = count * multiplier * calcmul;
+						//timetracker = millis();
 					}
 
 				}
-				else {
-					rotationrate = 0;
-
-				}
-
+				tempcount = count;
+				//recaliberate_startPosition();
+			
+				count = 0;
+				return tempcount;
 			}
 			else {
 				tempcount = count;
-				recaliberate_startPosition();
-				return tempcount;
+				//recaliberate_startPosition();
+				return 0;
 			}
 		}
-		else {
-			
+		else
+		{
 			if (!digitalRead(SensorINTpin[1]))//int1 active
 			{
 				get_sensorValue(2);
@@ -1037,43 +1029,39 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 					INTProcessed = true;
 				}
 			}
-
-			//calculate rate of rotation
 			if (count != 0) {
+
+				if (invertcount)
+				{
+					count *= -1;
+				}
 				haptics(1);
 				if (rotationrate > 0) {  //avoid negative values
-
-
-					if (rotationrate >= timetomultiply) { //not fast anough for multiplier
-
-						tempcount = count;
-						recaliberate_startPosition();
-						return tempcount;
-					}
-					else {
+					if (rotationrate < timetomultiply) { //not fast anough for multiplier
 						float calcmul = 1 - ((float)rotationrate / (float)timetomultiply);
-						tempcount = count * multiplier * calcmul;
-						recaliberate_startPosition();
-
-						return tempcount;
+						count = count * multiplier * calcmul;
+						//timetracker = millis();
 					}
 
 				}
-				else {
-					rotationrate = 0;
+				tempcount = count;
+				recaliberate_startPosition();
 
-				}
-
+				count = 0;
+				return tempcount;
 			}
 			else {
 				tempcount = count;
 				recaliberate_startPosition();
-				return tempcount;
+				return 0;
 			}
 		}
-
+		tempcount = count;
+		//recaliberate_startPosition();
+		return 0;
 	}
 }
+
 
 int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding function
 
@@ -1228,10 +1216,16 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 		return tempcount;
 	}
 	else {  //interrupt assisted
+		if (INT1fired) {
+			get_sensorValue(2);
+			startposition = get_encodingState(1);
+		}
+		else if (INT2fired) {
+			get_sensorValue(1);
+			startposition = get_encodingState(2);
+		}
 
 		if (startposition == 1) {   //sensor2 is in neutral
-
-
 			//get_sensorValue(1);
 			get_sensorValue(2);
 
@@ -1356,29 +1350,12 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 			}
 		}
 
+		if (invertcount)
+		{
+			count *= -1;
+		}
+
 		tempcount = count;
-		/*
-				countt += tempcount;
-				if (tempcount != 0) {
-					SerialUSB.print(setresolution);
-					SerialUSB.print("\t");
-					SerialUSB.print(sensor1);
-					SerialUSB.print("\t");
-					SerialUSB.print(prevsensor1);
-					SerialUSB.print("\t");
-					SerialUSB.print(sensor2);
-					SerialUSB.print("\t");
-					SerialUSB.print(prevsensor2);
-					SerialUSB.print("\t");
-					SerialUSB.print(startposition);
-					SerialUSB.print("\t");
-					SerialUSB.print(tempcount);
-					SerialUSB.print("\t");
-					SerialUSB.print(countt);
-					SerialUSB.print("\t");
-					SerialUSB.println(Mid);
-				}
-				*/
 		recaliberate_startPosition();
 		return tempcount;
 	}
@@ -1426,7 +1403,7 @@ void MagRotaryEncoder::set_bound(int b) {   //this value determines the upper an
 	Neutral[0] = absoluteNeutral - bound;
 	Neutral[1] = absoluteNeutral + bound;
 }
-void MagRotaryEncoder::useinterruptdetection(bool act) {   //this value determines the upper and lower limit of the ADC values
+void MagRotaryEncoder::useinterruptdetection(bool act) {   
 	useInterrupt = act;
 }
 

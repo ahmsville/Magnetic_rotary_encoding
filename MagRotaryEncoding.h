@@ -16,8 +16,10 @@ class MagRotaryEncoder {
 private:
 	int state, startposition = 0, prevstartposition,stepres = 100, sensor1_pin, sensor2_pin, prevsensor1, prevsensor2, setresolution = 1;
 	int sensor1, sensor2;
-	int Neutral[2], S1_Northpole[2], S1_Southpole[2], S1_North, S1_South, S2_Northpole[2], S2_Southpole[2], S2_North, S2_South, Mid;
-	int count, tempcount, bound = 10, addedbound = 0, stablerange = 10, tempanavaldiff, multiplier = 10, timetomultiply = 10;
+	int Neutral[2], S1_North, S1_South, S2_North, S2_South, Mid;
+	int S1_Neutral[2], S2_Neutral[2], S1_absoluteneutral, S2_absoluteneutral, maxsway = 50;
+	bool locksensorlevels = false;
+	int count, tempcount, bound = 10, ADCMaxRes = 4096, addedbound = 0, stablerange = 10, tempanavaldiff, multiplier = 10, timetomultiply = 10;
 	int southRegion, northRegion;
 	long rotationrate = 0, timetracker = 0;
 	int haptics_pin = 0, haptics_duration = 0, haptics_strength = 0, haptics_ontime, haptics_offtime, haptics_state;
@@ -74,7 +76,7 @@ public:
 
 	void setsleep(bool slpact);
 	bool readsleep();
-
+	bool passSynctest(int newspos);
 	int sensor1_INT();
 	int sensor2_INT();
 	int getActiveSensorInterrupt();
@@ -92,7 +94,9 @@ public:
 	
 	int get_sensorINTpin(int sensornum);  //
 	void set_adcresolution(int res);
-	
+	int CalibrateSensors(int snum);
+	bool LoadCalibrationData(int s1, int s2);
+	void DebugEncoder();
 
 };
 

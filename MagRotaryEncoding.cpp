@@ -2,13 +2,54 @@
 
 /*
 This library was written based on the rotation detection method described @ ""
-This library also features a haptics controller, that allows you to connect and control a vibration motor as a step count haptic feedback.
+This library also features a haptics controller, that allows you to connect and control a vibration motor as a step count haptic feedback.arduino
 
 ....Written By Ahmed Oyenuga (Ahmsville 2019).
 */
 
 
 volatile bool sleepmode = false;
+
+bool MagRotaryEncoder::passSynctest(int newspos)
+{
+	if (encoderResolution > 0)
+	{
+		if (startposition == 1)
+		{
+			if (newspos == 4 || newspos == 2)
+			{
+				return true;
+			}
+		}
+		else if (startposition == 2)
+		{
+			if (newspos == 1 || newspos == 3)
+			{
+				return true;
+			}
+		}
+		else if (startposition == 3)
+		{
+			if (newspos == 2 || newspos == 4)
+			{
+				return true;
+			}
+		}
+		else if (startposition == 4)
+		{
+			if (newspos == 3 || newspos == 1)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 
 int MagRotaryEncoder::sensor1_INT() {
 	if (!use_extended_resolution) { //extended res is not used
@@ -200,6 +241,9 @@ void MagRotaryEncoder::setResistorDivider(float R1, float R2, float vcc) {
 	newR2 = R1 + R2;
 
 	Neutral[1] = (1023 / vcc) * (vcc * newR2 / (newR1 + newR2));
+	bound = Neutral[1] - (ADCMaxRes / 2);
+
+	initialize_encoder();
 }
 
 int MagRotaryEncoder::get_sensorINTpin(int sensornum) {
@@ -214,13 +258,20 @@ int MagRotaryEncoder::get_sensorINTpin(int sensornum) {
 void MagRotaryEncoder::set_adcresolution(int res) {
 	if (res == 12)
 	{
+		ADCMaxRes = 4095;
 		absoluteNeutral = 2048;
+		bound = 20;
+		maxsway = 252;
 		adcVal = ADCRead(12);
 	}
 	else if (res == 10) {
+		ADCMaxRes = 1023;
 		absoluteNeutral = 512;
+		bound = 10;
+		maxsway = 50;
 		adcVal = ADCRead(10);
 	}
+	initialize_encoder();
 	
 }
 
@@ -229,25 +280,21 @@ void MagRotaryEncoder::invertCount(bool inv) {
 }
 
 void MagRotaryEncoder::set_poleStateValues(int sensornum, int np, int nu, int sp) {  //set ADC values for the poles (northpole, neutral, southpole)
-	if (sensornum == 1) {
-		S1_Northpole[0] = np - bound;
-		S1_Northpole[1] = np + bound;
-
-		S1_Southpole[0] = sp - bound;
-		S1_Southpole[1] = sp + bound;
-
-		S1_North = np;
-		S1_South = sp;
+	if (sensornum == 1)
+	{
+		S1_Neutral[0] = nu - bound;
+		S1_Neutral[1] = nu + bound;
+		S1_North = S1_Neutral[0];
+		S1_South = S1_Neutral[1];
+		S1_absoluteneutral = nu;
 	}
-	if (sensornum == 2) {
-		S2_Northpole[0] = np - bound;
-		S2_Northpole[1] = np + bound;
-
-		S2_Southpole[0] = sp - bound;
-		S2_Southpole[1] = sp + bound;
-
-		S2_North = np;
-		S2_South = sp;
+	if (sensornum == 2)
+	{
+		S2_Neutral[0] = nu - bound;
+		S2_Neutral[1] = nu + bound;
+		S2_North = S2_Neutral[0];
+		S2_South = S2_Neutral[1];
+		S2_absoluteneutral = nu;
 	}
 
 	southRegion = Neutral[1] + stablerange;
@@ -269,7 +316,47 @@ void MagRotaryEncoder::initialize_encoder() {   //initialize encoder
 
 }
 
+int MagRotaryEncoder::CalibrateSensors(int snum)
+{
+	int slevel = 0;
+	locksensorlevels = true;
+	if (snum == 1)
+	{
+		for (size_t i = 0; i < 10; i++)
+		{
+			slevel += adcVal.Read(sensor1_pin);
+		}
+		S1_absoluteneutral = slevel / 10;
+		S1_Neutral[0] = S1_absoluteneutral - bound;
+		S1_Neutral[1] = S1_absoluteneutral + bound;
+		return S1_absoluteneutral;
+	}
+	else if (snum == 2)
+	{
+		for (size_t i = 0; i < 10; i++)
+		{
+			slevel += adcVal.Read(sensor2_pin);
+		}
+		S2_absoluteneutral = slevel / 10;
+		S2_Neutral[0] = S2_absoluteneutral - bound;
+		S2_Neutral[1] = S2_absoluteneutral + bound;
+		return S2_absoluteneutral;
+	}
+}
+bool MagRotaryEncoder::LoadCalibrationData(int s1, int s2)
+{
+	//printf("s1 %d s2 %d \n",s1,s2);
+	S1_absoluteneutral = s1;
+	S1_Neutral[0] = S1_absoluteneutral - bound;
+	S1_Neutral[1] = S1_absoluteneutral + bound;
 
+	S2_absoluteneutral = s2;
+	S2_Neutral[0] = S2_absoluteneutral - bound;
+	S2_Neutral[1] = S2_absoluteneutral + bound;
+
+	locksensorlevels = true;
+	return true;
+}
 
 void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position based on the ADC values
 	haptics(0);
@@ -288,7 +375,7 @@ void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position
 		}
 
 
-
+		count = 0;
 
 	}
 	else {
@@ -296,11 +383,11 @@ void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position
 			if (INT1fired) {
 				get_sensorValue(2); //read sensor 2
 				//set new startposition
-				if (sensor2 > Neutral[1]) { //sensor1 = neutral , sensor2 = south
+				if (sensor2 > S2_Neutral[1]) { //sensor1 = neutral , sensor2 = south
 					startposition = 2;
 					prevsensor1 = Mid;
 				}
-				else if (sensor2 < Neutral[0]) { //sensor1 = neutral , sensor2 = north
+				else if (sensor2 < S2_Neutral[0]) { //sensor1 = neutral , sensor2 = north
 					startposition = 4;
 					prevsensor1 = Mid;
 				}
@@ -309,11 +396,11 @@ void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position
 			else if (INT2fired) {
 				get_sensorValue(1); //read sensor 1
 				//set new startposition
-				if (sensor1 > Neutral[1]) { //sensor2 = neutral , sensor1 = south
+				if (sensor1 > S1_Neutral[1]) { //sensor2 = neutral , sensor1 = south
 					startposition = 3;
 					prevsensor2 = Mid;
 				}
-				else if (sensor1 < Neutral[0]) { //sensor2 = neutral , sensor1 = north
+				else if (sensor1 < S1_Neutral[0]) { //sensor2 = neutral , sensor1 = north
 					startposition = 1;
 					prevsensor2 = Mid;
 				}
@@ -369,25 +456,108 @@ void MagRotaryEncoder::recaliberate_startPosition() {  //sets the start position
 
 
 
-	count = 0;
+	
+}
+
+void MagRotaryEncoder::DebugEncoder() {
+	/*SerialUSB.print(sensor1);
+	SerialUSB.print("\t");
+	SerialUSB.print(sensor2);
+	SerialUSB.print("\t");
+	SerialUSB.print(S1_Neutral[0]);
+	SerialUSB.print("\t");
+	SerialUSB.print(S1_Neutral[1]);
+	SerialUSB.print("\t");
+	SerialUSB.print(S2_Neutral[0]);
+	SerialUSB.print("\t");
+	SerialUSB.print(S2_Neutral[1]);
+	SerialUSB.print("\t");
+	SerialUSB.print(S1_absoluteneutral);
+	SerialUSB.print("\t");
+	SerialUSB.print(S2_absoluteneutral);
+	SerialUSB.print("\t");
+	SerialUSB.print(Neutral[0]);
+	SerialUSB.print("\t");
+	SerialUSB.print(Neutral[1]);
+	SerialUSB.print("\t");
+	SerialUSB.print(Mid);
+	SerialUSB.print("\t");
+	SerialUSB.print(setresolution);
+	SerialUSB.print("\t");
+	SerialUSB.print(bound);
+	SerialUSB.print("\t");
+	SerialUSB.print(maxsway);
+	SerialUSB.print("\t");
+	SerialUSB.println(startposition);*/
+
+
 }
 
 
 
-
-
 int MagRotaryEncoder::get_sensorValue(int sensornum) {
-	if (sensornum == 1) {
+	if (sensornum == 1)
+	{
+		
 		sensor1 = adcVal.Read(sensor1_pin);
-		if (use_extended_resolution) {
+		//dynamic sensor value update
+		if (!locksensorlevels)
+		{
+			if (sensor1 > S1_South || sensor1 < S1_North)
+			{
+				sensor2 = adcVal.Read(sensor2_pin);
+				if (sensor2 < absoluteNeutral + maxsway && sensor2 > absoluteNeutral - maxsway)
+				{
+					if (sensor1 > S1_South)
+					{
+						S1_South = sensor1;
+					}
+					else if (sensor1 < S1_North)
+					{
+						S1_North = sensor1;
+					}
+					S2_absoluteneutral = sensor2;
+					S2_Neutral[0] = S2_absoluteneutral - bound;
+					S2_Neutral[1] = S2_absoluteneutral + bound;
+				}
+			}
+		}
+
+		if (use_extended_resolution)
+		{
 			sensor1 = (sensor1 * alpha) + (prevsmoothsensor1 * (1 - alpha));
 			prevsmoothsensor1 = sensor1;
 		}
 		return sensor1;
 	}
-	else if (sensornum == 2) {
+	else if (sensornum == 2)
+	{
 		sensor2 = adcVal.Read(sensor2_pin);
-		if (use_extended_resolution) {
+		//dynamic sensor value update
+		if (!locksensorlevels)
+		{
+			if (sensor2 > S2_South || sensor2 < S2_North)
+			{
+				sensor1 = adcVal.Read(sensor1_pin);
+				if (sensor1 < absoluteNeutral + maxsway && sensor1 > absoluteNeutral - maxsway)
+				{
+					if (sensor2 > S2_South)
+					{
+						S2_South = sensor2;
+					}
+					else if (sensor2 < S2_North)
+					{
+						S2_North = sensor2;
+					}
+					S1_absoluteneutral = sensor1;
+					S1_Neutral[0] = S1_absoluteneutral - bound;
+					S1_Neutral[1] = S1_absoluteneutral + bound;
+				}
+			}
+		}
+
+		if (use_extended_resolution)
+		{
 			sensor2 = (sensor2 * alpha) + (prevsmoothsensor2 * (1 - alpha));
 			prevsmoothsensor2 = sensor2;
 		}
@@ -406,37 +576,47 @@ int MagRotaryEncoder::get_sensorValue(int sensornum, bool ret) {
 
 
 int MagRotaryEncoder::get_encodingState() {
-	if (!useautosetpoles)
-	{
-		if (sensor1 < Neutral[0] && sensor2 >= (Neutral[0]) && sensor2 <= (Neutral[1])) {  //sensor1 = north , sensor2 = neutral
+	
+	if (sensor2 >= S2_Neutral[0] && sensor2 <= S2_Neutral[1]) {  //sensor1 = north , sensor2 = neutral
+		if (sensor1 < S1_Neutral[0])
+		{
 			return 1;
 		}
-		else if (sensor1 >= (Neutral[0]) && sensor1 <= (Neutral[1]) && sensor2 > Neutral[1]) { //sensor1 = neutral , sensor2 = south
-			return 2;
-		}
-		else if (sensor1 > Neutral[1] && sensor2 >= (Neutral[0]) && sensor2 <= (Neutral[1])) { //sensor1 = south , sensor2 = neutral
+		else if (sensor1 > S1_Neutral[1])
+		{
 			return 3;
 		}
-		else if (sensor1 >= (Neutral[0]) && sensor1 <= (Neutral[1]) && sensor2 < Neutral[0]) { //sensor1 = neutral , sensor2 = north
+		
+	}
+	else if (sensor1 >= S1_Neutral[0] && sensor1 <= S1_Neutral[1]) { //sensor1 = neutral , sensor2 = south
+		if (sensor2 > S2_Neutral[1])
+		{
+			return 2;
+		}
+		else if (sensor2 < S2_Neutral[0])
+		{
 			return 4;
 		}
+		
 	}
 	else {
-		if (sensor1 < S1_North && sensor2 >= (Neutral[0]) && sensor2 <= (Neutral[1])) {  //sensor1 = north , sensor2 = neutral
-			return 1;
-		}
-		else if (sensor1 >= (Neutral[0]) && sensor1 <= (Neutral[1]) && sensor2 > S2_South) { //sensor1 = neutral , sensor2 = south
-			return 2;
-		}
-		else if (sensor1 > S1_South && sensor2 >= (Neutral[0]) && sensor2 <= (Neutral[1])) { //sensor1 = south , sensor2 = neutral
-			return 3;
-		}
-		else if (sensor1 >= (Neutral[0]) && sensor1 <= (Neutral[1]) && sensor2 < S2_North) { //sensor1 = neutral , sensor2 = north
-			return 4;
-		}
+		return startposition;
 	}
-
-	return startposition;
+		//if (sensor1 < Neutral[0] && sensor2 >= (Neutral[0]) && sensor2 <= (Neutral[1])) {  //sensor1 = north , sensor2 = neutral
+		//	return 1;
+		//}
+		//else if (sensor1 >= (Neutral[0]) && sensor1 <= (Neutral[1]) && sensor2 > Neutral[1]) { //sensor1 = neutral , sensor2 = south
+		//	return 2;
+		//}
+		//else if (sensor1 > Neutral[1] && sensor2 >= (Neutral[0]) && sensor2 <= (Neutral[1])) { //sensor1 = south , sensor2 = neutral
+		//	return 3;
+		//}
+		//else if (sensor1 >= (Neutral[0]) && sensor1 <= (Neutral[1]) && sensor2 < Neutral[0]) { //sensor1 = neutral , sensor2 = north
+		//	return 4;
+		//}
+	
+		//return startposition;
+	
 }
 
 int MagRotaryEncoder::get_encodingState(int incenter) {
@@ -445,20 +625,20 @@ int MagRotaryEncoder::get_encodingState(int incenter) {
 	{
 		if (incenter == 1)
 		{
-			if (sensor2 > Neutral[1]) { //sensor1 = neutral , sensor2 = south
+			if (sensor2 > S2_Neutral[1]) { //sensor1 = neutral , sensor2 = south
 				return 2;
 			}
 
-			else if (sensor2 < Neutral[0]) { //sensor1 = neutral , sensor2 = north
+			else if (sensor2 < S2_Neutral[0]) { //sensor1 = neutral , sensor2 = north
 				return 4;
 			}
 		}
 		else if (incenter == 2) {
-			if (sensor1 > Neutral[1]) { //sensor2 = neutral , sensor1 = south
+			if (sensor1 > S1_Neutral[1]) { //sensor2 = neutral , sensor1 = south
 				return 3;
 			}
 
-			else if (sensor1 < Neutral[0]) { //sensor2 = neutral , sensor1 = north
+			else if (sensor1 < S1_Neutral[0]) { //sensor2 = neutral , sensor1 = north
 				return 1;
 			}
 		}
@@ -579,25 +759,23 @@ int MagRotaryEncoder::setToStart() {
 	encoderPosition = 1;
 
 	startposition = 0;
-	//get_sensorValue(1);
-	//get_sensorValue(2);
+	get_sensorValue(1);
+	get_sensorValue(2);
 	recaliberate_startPosition();
 	count = 0;
 
-
-	storedstartposition = startposition;
-	storedsensor1state = sensor1;
-	storedsensor2state = sensor2;
-	inSync = true;
-	//SerialUSB.println(startposition);
-/*
-SerialUSB.print(storedstartposition);
-SerialUSB.print("\t");
-SerialUSB.print(storedsensor1state);
-SerialUSB.print("\t");
-SerialUSB.println(storedsensor2state);
-*/
-	return encoderPosition;
+	if (startposition != 0)
+	{
+		storedstartposition = startposition;
+		storedsensor1state = sensor1;
+		storedsensor2state = sensor2;
+		inSync = true;
+		return encoderPosition;
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding function
@@ -708,7 +886,7 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 					if (inSync)
 					{
 						tempcount = count;
-						//recaliberate_startPosition();
+						recaliberate_startPosition();
 						tempcount = get_encResCount(tempcount);
 						//SerialUSB.print(tempcount);
 					}
@@ -719,14 +897,14 @@ int MagRotaryEncoder::detect_rotation() {  // openloop rotation encoding functio
 				}
 				else {
 					tempcount = count;
-					//recaliberate_startPosition();
+					recaliberate_startPosition();
 				}
 				count = 0;
 				return tempcount;
 			}
 			else {
 				tempcount = count;
-				//recaliberate_startPosition();
+				recaliberate_startPosition();
 				return 0;
 			}
 		}
@@ -954,14 +1132,14 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 
 				}
 				tempcount = count;
-				//recaliberate_startPosition();
+				recaliberate_startPosition();
 			
 				count = 0;
 				return tempcount;
 			}
 			else {
 				tempcount = count;
-				//recaliberate_startPosition();
+				recaliberate_startPosition();
 				return 0;
 			}
 		}
@@ -1057,7 +1235,7 @@ int MagRotaryEncoder::detect_rotationWithRate() {  // openloop rotation encoding
 			}
 		}
 		tempcount = count;
-		//recaliberate_startPosition();
+		recaliberate_startPosition();
 		return 0;
 	}
 }
@@ -1071,7 +1249,7 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 		if (startposition == 1) {   //sensor2 is in neutral
 			get_sensorValue(1);
 			get_sensorValue(2);
-			if (!(sensor2 < Neutral[1] && sensor2 > Neutral[0])) { //analog value is not in the neutral range
+			if (!(sensor2 < S2_Neutral[1] && sensor2 > S2_Neutral[0])) { //analog value is not in the neutral range
 				// check for actual rotation
 				if (prevsensor2 != Mid) {
 					if (sensor2 > (prevsensor2 + setresolution) || sensor2 < (prevsensor2 - setresolution)) {
@@ -1100,7 +1278,7 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 		else if (startposition == 2) {  //sensor1 is in neutral
 			get_sensorValue(1);
 			get_sensorValue(2);
-			if (!(sensor1 < Neutral[1] && sensor1 > Neutral[0])) { //analog value is not in the neutral range
+			if (!(sensor1 < S1_Neutral[1] && sensor1 > S1_Neutral[0])) { //analog value is not in the neutral range
 				// check for actual rotation
 				if (prevsensor1 != Mid) {
 					// check for actual rotation
@@ -1129,7 +1307,7 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 		else if (startposition == 3) {  //sensor2 is in neutral
 			get_sensorValue(1);
 			get_sensorValue(2);
-			if (!(sensor2 < Neutral[1] && sensor2 > Neutral[0])) { //analog value is not in the neutral range
+			if (!(sensor2 < S2_Neutral[1] && sensor2 > S2_Neutral[0])) { //analog value is not in the neutral range
 				// check for actual rotation
 				if (prevsensor2 != Mid) {
 					// check for actual rotation
@@ -1157,7 +1335,7 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 		else if (startposition == 4) {  //sensor1 is in neutral
 			get_sensorValue(1);
 			get_sensorValue(2);
-			if (!(sensor1 < Neutral[1] && sensor1 > Neutral[0])) { //analog value is not in the neutral range
+			if (!(sensor1 < S1_Neutral[1] && sensor1 > S1_Neutral[0])) { //analog value is not in the neutral range
 				// check for actual rotation
 				if (prevsensor1 != Mid) {
 					// check for actual rotation
@@ -1229,7 +1407,7 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 			//get_sensorValue(1);
 			get_sensorValue(2);
 
-			if (!(sensor2 < Neutral[1] && sensor2 > Neutral[0])) { //analog value is not in the neutral range
+			if (!(sensor2 < S2_Neutral[1] && sensor2 > S2_Neutral[0])) { //analog value is not in the neutral range
 				// check for actual rotation
 				if (prevsensor2 != Mid) {
 					if (sensor2 > (prevsensor2 + setresolution) || sensor2 < (prevsensor2 - setresolution)) {
@@ -1261,7 +1439,7 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 			//get_sensorValue(2);
 
 
-			if (!(sensor1 < Neutral[1] && sensor1 > Neutral[0])) { //analog value is not in the neutral range
+			if (!(sensor1 < S1_Neutral[1] && sensor1 > S1_Neutral[0])) { //analog value is not in the neutral range
 				// check for actual rotation
 				if (prevsensor1 != Mid) {
 					// check for actual rotation
@@ -1293,7 +1471,7 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 			//get_sensorValue(1);
 			get_sensorValue(2);
 
-			if (!(sensor2 < Neutral[1] && sensor2 > Neutral[0])) { //analog value is not in the neutral range
+			if (!(sensor2 < S2_Neutral[1] && sensor2 > S2_Neutral[0])) { //analog value is not in the neutral range
 				// check for actual rotation
 				if (prevsensor2 != Mid) {
 					// check for actual rotation
@@ -1324,7 +1502,7 @@ int MagRotaryEncoder::detect_rotationHR() {  // openloop rotation encoding funct
 			//get_sensorValue(2);
 
 
-			if (!(sensor1 < Neutral[1] && sensor1 > Neutral[0])) { //analog value is not in the neutral range
+			if (!(sensor1 < S1_Neutral[1] && sensor1 > S1_Neutral[0])) { //analog value is not in the neutral range
 				// check for actual rotation
 				if (prevsensor1 != Mid) {
 					// check for actual rotation
@@ -1400,8 +1578,7 @@ void MagRotaryEncoder::rotation_action(int act) {  //sets action for clockwise a
 
 void MagRotaryEncoder::set_bound(int b) {   //this value determines the upper and lower limit of the ADC values
 	bound = b;
-	Neutral[0] = absoluteNeutral - bound;
-	Neutral[1] = absoluteNeutral + bound;
+	initialize_encoder();
 }
 void MagRotaryEncoder::useinterruptdetection(bool act) {   
 	useInterrupt = act;

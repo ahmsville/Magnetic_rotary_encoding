@@ -179,6 +179,7 @@ You have two options when it comes to complimentary input on the encoder, you ca
 To use capacitive touch, you will need an Arduino board, if you use other development boards like the ESP32 or Raspberry PI Pico, you will have to use the push button.
 
 ![SAGSAFFF](https://user-images.githubusercontent.com/44074914/173828647-ea86e3fc-15b6-4d46-b57a-7ddf50a5c1b0.JPG)
+![zczczczcc](https://user-images.githubusercontent.com/44074914/173828825-d68dd299-2c89-480c-8a5f-8e78a425d960.jpg)
 
 ## Capacitive touch
 To use the capacitive touch on an Arduino, you must have assembled the encoder according to the instructions, so that you can simply connect CT1 and CT2 to two available pins and then update the pin assignment in the example code accordingly.

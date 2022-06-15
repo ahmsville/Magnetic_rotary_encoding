@@ -68,6 +68,9 @@ To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, and E
 
 ![Asset 2](https://user-images.githubusercontent.com/44074914/173825611-aab57707-392c-480e-8610-ec4d45aefe54.png)
 
+Depending on your encoder version, you may also need to bridge the config pads on the PCB to use this mode.
+![ASDADASDASDASDAS](https://user-images.githubusercontent.com/44074914/173827069-2207902e-b88c-4448-b508-796e5d3d4b18.jpg)
+
 ## Code
 
 To test the code, all you have to do is activate the analog and digital mode and also change the pin assignment according to your connections. For this mode, you also have the option to choose continuous rotation detection which returns a continuous count in either direction, or absolute positioning, which returns a value within the encoder’s base resolution, you can also choose the extended interpolated resolution mode for a super-duper high resolution.
@@ -174,6 +177,8 @@ E2_INT2 = 19  # hall sensor 2 interrupt pin 2
 
 You have two options when it comes to complimentary input on the encoder, you can choose to use capacitive touch or a normal push button, both the capacitive touch and the push button will be included with the kit if you buy it from my store.
 To use capacitive touch, you will need an Arduino board, if you use other development boards like the ESP32 or Raspberry PI Pico, you will have to use the push button.
+
+![SAGSAFFF](https://user-images.githubusercontent.com/44074914/173827574-7db73b0e-18ea-494b-8519-4e3303a4f523.JPG)
 
 ## Capacitive touch
 To use the capacitive touch on an Arduino, you must have assembled the encoder according to the instructions, so that you can simply connect CT1 and CT2 to two available pins and then update the pin assignment in the example code accordingly.

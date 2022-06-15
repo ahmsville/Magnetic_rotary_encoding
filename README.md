@@ -15,7 +15,7 @@ in this mode the library uses just the signals from the hall effect sensors to m
 
 To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, you may also connect the LED pin to any available pin on the board. VCC  should be connected to the same voltage level used by the microcontroller on the boards, so power the encoder with 5v if the board uses 5v, and power it with 3.3v it the board uses 3.3v, you should offcus also connect the GND pin.
 
-![Asset 1](https://user-images.githubusercontent.com/44074914/173825536-6b91bf75-7ed2-4496-8967-1ca0e0fe1f67.png =250x)
+![Asset 1](https://user-images.githubusercontent.com/44074914/173825536-6b91bf75-7ed2-4496-8967-1ca0e0fe1f67.png)
 
 ## Code
 

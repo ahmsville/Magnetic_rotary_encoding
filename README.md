@@ -117,7 +117,7 @@ E1_ADC_PIN = 26 # ADC PIN for hall sensor 1
 E2_ADC_PIN = 27 # ADC PIN for hall sensor 2
 ```
 
-## 2. Digital only Detection: 
+## 3. Digital only Detection: 
 
 in this mode the library uses only digital interrupt enabled input pins; four of them. This mode is similar in operation to traditional rotary switches, the analog signals from the hall effect sensors have been converted to digital signals using comparators, so no analog input pins are required. This mode was developed for systems that don’t have or cannot spare analog input pins, its also the fastest mode and requires zero polling, which is why I used it to encode the [Pick N Place Wheel](https://youtu.be/MtNO8-5vCqg). 
 Because this mode uses digital signals alone, you cannot use the interpolated extended resolution mode that is available in the previous modes.

@@ -104,11 +104,11 @@ ENCMODE  = 4 # BASE RESOLUTION ANALOG AND DIGITAL
 ```
 
 ```python
-E1_INT1 = 16 // hall sensor 1 interrupt pin 1
-E2_INT1 = 18 // hall sensor 2 interrupt pin 1
+E1_INT1 = 16 # hall sensor 1 interrupt pin 1
+E2_INT1 = 18 # hall sensor 2 interrupt pin 1
 
-E1_ADC_PIN = 26 // ADC PIN for hall sensor 1
-E2_ADC_PIN = 27 // ADC PIN for hall sensor 2
+E1_ADC_PIN = 26 # ADC PIN for hall sensor 1
+E2_ADC_PIN = 27 # ADC PIN for hall sensor 2
 ```
 
 ## 2. Digital only Detection: 
@@ -192,6 +192,6 @@ To use the push button, you should solder the included button to the encoder boa
 ## MicroPython
 
 ```python
-CT1 = 15 // PUSH BUTTON (CT1)
+CT1 = 15 # PUSH BUTTON (CT1)
 ```
 

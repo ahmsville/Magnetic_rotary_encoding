@@ -180,6 +180,8 @@ To use capacitive touch, you will need an Arduino board, if you use other develo
 
 <img src="[https://user-images.githubusercontent.com/44074914/173827574-7db73b0e-18ea-494b-8519-4e3303a4f523.JPG]" width="600">
 
+[[https://user-images.githubusercontent.com/44074914/173827574-7db73b0e-18ea-494b-8519-4e3303a4f523.JPG|width=400px]] 
+
 
 ## Capacitive touch
 To use the capacitive touch on an Arduino, you must have assembled the encoder according to the instructions, so that you can simply connect CT1 and CT2 to two available pins and then update the pin assignment in the example code accordingly.

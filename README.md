@@ -178,7 +178,8 @@ E2_INT2 = 19  # hall sensor 2 interrupt pin 2
 You have two options when it comes to complimentary input on the encoder, you can choose to use capacitive touch or a normal push button, both the capacitive touch and the push button will be included with the kit if you buy it from my store.
 To use capacitive touch, you will need an Arduino board, if you use other development boards like the ESP32 or Raspberry PI Pico, you will have to use the push button.
 
-<img src="[https://your-image-url.type](https://user-images.githubusercontent.com/44074914/173827574-7db73b0e-18ea-494b-8519-4e3303a4f523.JPG)" width="600">
+<img src="[https://user-images.githubusercontent.com/44074914/173827574-7db73b0e-18ea-494b-8519-4e3303a4f523.JPG]" width="600">
+
 
 ## Capacitive touch
 To use the capacitive touch on an Arduino, you must have assembled the encoder according to the instructions, so that you can simply connect CT1 and CT2 to two available pins and then update the pin assignment in the example code accordingly.

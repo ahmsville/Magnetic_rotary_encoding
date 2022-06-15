@@ -20,6 +20,8 @@ To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, you m
 
 To test the example code, all you have to do is activate the analog only mode and change the pin assignment according to your connections. For the mode, you have the option to choose continuous rotation detection which returns a continuous count in either direction, or absolute positioning, which returns a value within the encoder’s base resolution, you can also choose the extended interpolated resolution mode for a super-duper high resolution.
 
+## C/C++
+
 ```c++
 #define ENCMODE 1 // BASE RESOLUTION ANALOG ONLY
 //#define ENCMODE 2 // BASE RESOLUTION ANALOG ONLY ABSOLUTE POSITIONING
@@ -36,6 +38,24 @@ To test the example code, all you have to do is activate the analog only mode an
 #define E2_ADC_PIN 27 // ADC PIN for hall sensor 2
 ```
 
+## MicroPython
+
+```python
+ENCMODE = 1 # BASE RESOLUTION ANALOG ONLY
+#ENCMODE  = 2 # BASE RESOLUTION ANALOG ONLY ABSOLUTE POSITIONING
+#ENCMODE  = 3 # EXTENDED RESOLUTION ANALOG ONLY
+#ENCMODE  = 4 # BASE RESOLUTION ANALOG AND DIGITAL
+#ENCMODE  = 5 # BASE RESOLUTION ANALOG AND DIGITAL ABSOLUTE POSITIONING
+#ENCMODE  = 6 # EXTENDED RESOLUTION ANALOG AND DIGITAL
+#ENCMODE  = 7 # BASE RESOLUTION DIGITAL ONLY
+#ENCMODE  = 8 # BASE RESOLUTION DIGITAL ONLY ABSOLUTE POSITIONING
+```
+
+```python
+E1_ADC_PIN = 26  # ADC PIN for hall sensor 1
+E2_ADC_PIN = 27  # ADC PIN for hall sensor 2
+```
+
 ## 2. Analog and Digital Detection: 
 
 in this mode the library uses the signals from the hall effect sensors together with two additional digital interrupt enabled input pins. This mode has all the same features and benefits as the analog only detection mode without the need for constant polling of the hall effect sensors, this is extremely usefull for complex systems, as the interrupt pins notify the code of when a rotation occurs, so constant polling is not needed, this mode is in fact the mode used on the [Ahmsville Dial V2](https://youtu.be/yGbshYLfDnc).
@@ -48,6 +68,8 @@ To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, and E
 ## Code
 
 To test the code, all you have to do is activate the analog and digital mode and also change the pin assignment according to your connections. For this mode, you also have the option to choose continuous rotation detection which returns a continuous count in either direction, or absolute positioning, which returns a value within the encoder’s base resolution, you can also choose the extended interpolated resolution mode for a super-duper high resolution.
+
+## C/C++
 
 ```c++
 //#define ENCMODE 1 // BASE RESOLUTION ANALOG ONLY
@@ -68,6 +90,27 @@ To test the code, all you have to do is activate the analog and digital mode and
 #define E2_ADC_PIN 27 // ADC PIN for hall sensor 2
 ```
 
+## MicroPython
+
+```python
+#ENCMODE = 1 # BASE RESOLUTION ANALOG ONLY
+#ENCMODE  = 2 # BASE RESOLUTION ANALOG ONLY ABSOLUTE POSITIONING
+#ENCMODE  = 3 # EXTENDED RESOLUTION ANALOG ONLY
+ENCMODE  = 4 # BASE RESOLUTION ANALOG AND DIGITAL
+#ENCMODE  = 5 # BASE RESOLUTION ANALOG AND DIGITAL ABSOLUTE POSITIONING
+#ENCMODE  = 6 # EXTENDED RESOLUTION ANALOG AND DIGITAL
+#ENCMODE  = 7 # BASE RESOLUTION DIGITAL ONLY
+#ENCMODE  = 8 # BASE RESOLUTION DIGITAL ONLY ABSOLUTE POSITIONING
+```
+
+```python
+E1_INT1 = 16 // hall sensor 1 interrupt pin 1
+E2_INT1 = 18 // hall sensor 2 interrupt pin 1
+
+E1_ADC_PIN = 26 // ADC PIN for hall sensor 1
+E2_ADC_PIN = 27 // ADC PIN for hall sensor 2
+```
+
 ## 2. Digital only Detection: 
 
 in this mode the library uses only digital interrupt enabled input pins; four of them. This mode is similar in operation to traditional rotary switches, the analog signals from the hall effect sensors have been converted to digital signals using comparators, so no analog input pins are required. This mode was developed for systems that don’t have or cannot spare analog input pins, its also the fastest mode and requires zero polling, which is why I used it to encode the [Pick N Place Wheel](https://youtu.be/MtNO8-5vCqg). 
@@ -81,6 +124,9 @@ To use this mode, simply connect E1-INT1, E1-INT2, E2-INT1 and E2-INT2 to four i
 ## Code
 
 To test the code, all you have to do is activate the digital only mode and also change the pin assignments according to your connections. For this mode, you have the option to choose continuous rotation detection which returns a continuous count in either direction, or absolute positioning, which returns a value within the encoder’s base resolution.
+
+## C/C++
+
 ```c++
 //#define ENCMODE 1 // BASE RESOLUTION ANALOG ONLY
 //#define ENCMODE 2 // BASE RESOLUTION ANALOG ONLY ABSOLUTE POSITIONING
@@ -99,6 +145,26 @@ To test the code, all you have to do is activate the digital only mode and also 
 #define E2_INT2 19 // hall sensor 2 interrupt pin 2
 ```
 
+## MicroPython
+
+```python
+#ENCMODE = 1 # BASE RESOLUTION ANALOG ONLY
+#ENCMODE  = 2 # BASE RESOLUTION ANALOG ONLY ABSOLUTE POSITIONING
+#ENCMODE  = 3 # EXTENDED RESOLUTION ANALOG ONLY
+ENCMODE  = 4 # BASE RESOLUTION ANALOG AND DIGITAL
+#ENCMODE  = 5 # BASE RESOLUTION ANALOG AND DIGITAL ABSOLUTE POSITIONING
+#ENCMODE  = 6 # EXTENDED RESOLUTION ANALOG AND DIGITAL
+#ENCMODE  = 7 # BASE RESOLUTION DIGITAL ONLY
+#ENCMODE  = 8 # BASE RESOLUTION DIGITAL ONLY ABSOLUTE POSITIONING
+```
+
+```python
+E1_INT1 = 16  # hall sensor 1 interrupt pin 1
+E1_INT2 = 17  # hall sensor 1 interrupt pin 2
+E2_INT1 = 18  # hall sensor 2 interrupt pin 1
+E2_INT2 = 19  # hall sensor 2 interrupt pin 2
+```
+
 # Complimentary Input on the Encoder
 
 You have two options when it comes to complimentary input on the encoder, you can choose to use capacitive touch or a normal push button, both the capacitive touch and the push button will be included with the kit if you buy it from my store.
@@ -107,7 +173,25 @@ To use capacitive touch, you will need an Arduino board, if you use other develo
 ## Capacitive touch
 To use the capacitive touch on an Arduino, you must have assembled the encoder according to the instructions, so that you can simply connect CT1 and CT2 to two available pins and then update the pin assignment in the example code accordingly.
 
+## C/C++
+
+```c++
+#define CT1 5 // CAPACITIVE TOUCH (CT1)
+#define CT2 6 // CAPACITIVE TOUCH (CT2)
+```
+
 ## Push button
 To use the push button, you should solder the included button to the encoder board and then connect only CT1 to an available pin on the development board.
 
+## C/C++
+
+```c++
+#define CT1 15 // PUSH BUTTON (CT1)
+```
+
+## MicroPython
+
+```python
+CT1 = 15 // PUSH BUTTON (CT1)
+```
 

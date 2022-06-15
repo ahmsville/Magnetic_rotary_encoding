@@ -175,7 +175,7 @@ E2_INT2 = 19  # hall sensor 2 interrupt pin 2
 
 # Complimentary Input on the Encoder
 
-You have two options when it comes to complimentary input on the encoder, you can choose to use capacitive touch or a normal push button, both the capacitive touch and the push button will be included with the kit if you buy it from my store.
+You have two options when it comes to complimentary input on the encoder, you can choose to use capacitive touch or a normal push button, both the capacitive touch and the push button will be included with the kit if you buy it from [my store](https://www.tindie.com/products/22156/).
 To use capacitive touch, you will need an Arduino board, if you use other development boards like the ESP32 or Raspberry PI Pico, you will have to use the push button.
 
 ![SAGSAFFF](https://user-images.githubusercontent.com/44074914/173828647-ea86e3fc-15b6-4d46-b57a-7ddf50a5c1b0.JPG)

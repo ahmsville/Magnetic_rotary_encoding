@@ -20,6 +20,17 @@ To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, you m
 
 To test the example code, all you have to do is activate the analog only mode and change the pin assignment according to your connections. For the mode, you have the option to choose continuous rotation detection which returns a continuous count in either direction, or absolute positioning, which returns a value within the encoder’s base resolution, you can also choose the extended interpolated resolution mode for a super-duper high resolution.
 
+...c++
+#define ENCMODE 1 // BASE RESOLUTION ANALOG ONLY
+//#define ENCMODE 2 // BASE RESOLUTION ANALOG ONLY ABSOLUTE POSITIONING
+//#define ENCMODE 3 // EXTENDED RESOLUTION ANALOG ONLY
+//#define ENCMODE 4 // BASE RESOLUTION ANALOG AND DIGITAL
+//#define ENCMODE 5 // BASE RESOLUTION ANALOG AND DIGITAL ABSOLUTE POSITIONING
+//#define ENCMODE 6 // EXTENDED RESOLUTION ANALOG AND DIGITAL
+//#define ENCMODE 7 // BASE RESOLUTION DIGITAL ONLY
+//#define ENCMODE 8 // BASE RESOLUTION DIGITAL ONLY ABSOLUTE POSITIONING
+...
+
 ## 2. Analog and Digital Detection: 
 
 in this mode the library uses the signals from the hall effect sensors together with two additional digital interrupt enabled input pins. This mode has all the same features and benefits as the analog only detection mode without the need for constant polling of the hall effect sensors, this is extremely usefull for complex systems, as the interrupt pins notify the code of when a rotation occurs, so constant polling is not needed, this mode is in fact the mode used on the [Ahmsville Dial V2](https://youtu.be/yGbshYLfDnc).
@@ -35,7 +46,7 @@ To test the code, all you have to do is activate the analog and digital mode and
 
 ## 2. Digital only Detection: 
 
-in this mode the library uses only digital interrupt enabled input pins; four of them. This mode is similar in operation to traditional rotary switches, the analog signals from the hall effect sensors have been converted to digital signals using comparators, so no analog input pins are required. This mode was developed for systems that don’t have or cannot spare analog input pins, its also the fastest mode and requires zero polling, which is why I used it to encode the [Pick N Place Wheel](https://youtu.be/yGbshYLfDnc). 
+in this mode the library uses only digital interrupt enabled input pins; four of them. This mode is similar in operation to traditional rotary switches, the analog signals from the hall effect sensors have been converted to digital signals using comparators, so no analog input pins are required. This mode was developed for systems that don’t have or cannot spare analog input pins, its also the fastest mode and requires zero polling, which is why I used it to encode the [Pick N Place Wheel](https://youtu.be/MtNO8-5vCqg). 
 Because this mode uses digital signals alone, you cannot use the interpolated extended resolution mode that is available in the previous modes.
 
 

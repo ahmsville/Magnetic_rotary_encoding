@@ -3,7 +3,6 @@
 This library was written based on the rotation detection method described @ https://youtu.be/atb6d4b-VYk and also in the pdf included with the library, so if you intend to use said method for detecting rotations in your projects, this library will come in handy. The library also features a haptics controller which allows you to connect and control a vibration motor as a step count haptic feedback.
 
 
-
 # How to connect and use the Ahmsville labs magnetic rotary encoder.
 
 There are three ways to connect the magnetic rotary encoder, all with their benefits and draw backs.
@@ -15,6 +14,8 @@ in this mode the library uses just the signals from the hall effect sensors to m
 ## Connection
 
 To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, you may also connect the LED pin to any available pin on the board. VCC  should be connected to the same voltage level used by the microcontroller on the boards, so power the encoder with 5v if the board uses 5v, and power it with 3.3v it the board uses 3.3v, you should offcus also connect the GND pin.
+
+![Asset 1](https://user-images.githubusercontent.com/44074914/173825536-6b91bf75-7ed2-4496-8967-1ca0e0fe1f67.png)
 
 ## Code
 
@@ -64,6 +65,8 @@ Please note that the code will return to constant polling if you select the Exte
 ## Connection
 
 To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, and E1-INT1 and E2-INT1 to two interrupt enabled pins on the board, you may also connect the LED pin to any available pins on the board. VCC  should be connected to the same voltage level used by the microcontroller on the boards, so power the encoder with 5v if the board uses 5v, and power it with 3.3v it the board uses 3.3v, you should offcus also connect the GND pin.
+
+![Asset 2](https://user-images.githubusercontent.com/44074914/173825611-aab57707-392c-480e-8610-ec4d45aefe54.png)
 
 ## Code
 
@@ -120,6 +123,8 @@ Because this mode uses digital signals alone, you cannot use the interpolated ex
 ## Connection
 
 To use this mode, simply connect E1-INT1, E1-INT2, E2-INT1 and E2-INT2 to four interrupt enabled pins on the board, you may also connect the LED pin to any available pins on the board. VCC  should be connected to the same voltage level used by the microcontroller on the boards, so power the encoder with 5v if the board uses 5v, and power it with 3.3v it the board uses 3.3v,  also connect the GND pin.
+
+![Asset 3](https://user-images.githubusercontent.com/44074914/173826041-c3bf1a1e-9294-4325-9d1e-80088eb1ce67.png)
 
 ## Code
 

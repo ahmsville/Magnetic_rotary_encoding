@@ -32,3 +32,30 @@ To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, and E
 ## Code
 
 To test the code, all you have to do is activate the analog and digital mode and also change the pin assignment according to your connections. For this mode, you also have the option to choose continuous rotation detection which returns a continuous count in either direction, or absolute positioning, which returns a value within the encoder’s base resolution, you can also choose the extended interpolated resolution mode for a super-duper high resolution.
+
+## 2. Digital only Detection: 
+
+in this mode the library uses only digital interrupt enabled input pins; four of them. This mode is similar in operation to traditional rotary switches, the analog signals from the hall effect sensors have been converted to digital signals using comparators, so no analog input pins are required. This mode was developed for systems that don’t have or cannot spare analog input pins, its also the fastest mode and requires zero polling, which is why I used it to encode the [Pick N Place Wheel](https://youtu.be/yGbshYLfDnc). 
+Because this mode uses digital signals alone, you cannot use the interpolated extended resolution mode that is available in the previous modes.
+
+
+## Connection
+
+To use this mode, simply connect E1-INT1, E1-INT2, E2-INT1 and E2-INT2 to four interrupt enabled pins on the board, you may also connect the LED pin to any available pins on the board. VCC  should be connected to the same voltage level used by the microcontroller on the boards, so power the encoder with 5v if the board uses 5v, and power it with 3.3v it the board uses 3.3v,  also connect the GND pin.
+
+## Code
+
+To test the code, all you have to do is activate the digital only mode and also change the pin assignments according to your connections. For this mode, you have the option to choose continuous rotation detection which returns a continuous count in either direction, or absolute positioning, which returns a value within the encoder’s base resolution.
+
+# Complimentary Input on the Encoder
+
+You have two options when it comes to complimentary input on the encoder, you can choose to use capacitive touch or a normal push button, both the capacitive touch and the push button will be included with the kit if you buy it from my store.
+To use capacitive touch, you will need an Arduino board, if you use other development boards like the ESP32 or Raspberry PI Pico, you will have to use the push button.
+
+## Capacitive touch
+To use the capacitive touch on an Arduino, you must have assembled the encoder according to the instructions, so that you can simply connect CT1 and CT2 to two available pins and then update the pin assignment in the example code accordingly.
+
+## Push button
+To use the push button, you should solder the included button to the encoder board and then connect only CT1 to an available pin on the development board.
+
+

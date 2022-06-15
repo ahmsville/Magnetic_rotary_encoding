@@ -20,7 +20,7 @@ To use this mode, simply connect ENC-1 and ENC-2 to two analog input pins, you m
 
 To test the example code, all you have to do is activate the analog only mode and change the pin assignment according to your connections. For the mode, you have the option to choose continuous rotation detection which returns a continuous count in either direction, or absolute positioning, which returns a value within the encoder’s base resolution, you can also choose the extended interpolated resolution mode for a super-duper high resolution.
 
-...c++
+```c++
 #define ENCMODE 1 // BASE RESOLUTION ANALOG ONLY
 //#define ENCMODE 2 // BASE RESOLUTION ANALOG ONLY ABSOLUTE POSITIONING
 //#define ENCMODE 3 // EXTENDED RESOLUTION ANALOG ONLY
@@ -29,7 +29,7 @@ To test the example code, all you have to do is activate the analog only mode an
 //#define ENCMODE 6 // EXTENDED RESOLUTION ANALOG AND DIGITAL
 //#define ENCMODE 7 // BASE RESOLUTION DIGITAL ONLY
 //#define ENCMODE 8 // BASE RESOLUTION DIGITAL ONLY ABSOLUTE POSITIONING
-...
+```
 
 ## 2. Analog and Digital Detection: 
 

@@ -1,0 +1,39 @@
+Altium Designer Pick and Place Locations
+C:\Users\ahmsv\OneDrive\MY STUFF\Circuits & PCB'S\Altium\Miscellaneous\Project Outputs for Miscellaneous\Pick Place for Magnetic Rotary encoder.csv
+
+========================================================================================================================
+File Design Information:
+
+Date:       15/05/21
+Time:       00:36
+Revision:   Not in VersionControl
+Variant:    No variations
+Units used: mm
+
+Designator,Comment,Layer,Footprint,Center-X(mm),Center-Y(mm),Rotation,Description,Value,PnPWheel Position
+U17,LM2901PWR,TopLayer,TSSOP14,29.9244,52.8744,270,Low-power quad voltage comparator,,unloaded
+R11,Res,TopLayer,0603_res,22.2244,51.0744,360,Resistor,10K,w1_019
+R10,Res,TopLayer,0603_res,22.2744,52.8494,180,Resistor,604,w1_042
+R9,Res,TopLayer,0603_res,22.2744,54.5494,180,Resistor,10K,w1_019
+R8,Res,TopLayer,0603_res,35.5494,53.9467,360,Resistor,10K,w1_019
+R7,Res,TopLayer,0603_res,35.5494,51.7494,360,Resistor,10K,w1_019
+C12,Cap,TopLayer,0603_cap,24.8244,52.6494,90,Capacitor,1uF,w1_022
+C11,Cap,TopLayer,0805_cap,50.3744,39.1244,90,Capacitor,10uF,w1_005
+U15,A-LED,TopLayer,SK6812_SIDE,1.8913,23.848,282,SK6812 SIDE-A Addressable led,,w1_041
+U14,A-LED,TopLayer,SK6812_SIDE,6.7558,12.9953,306,SK6812 SIDE-A Addressable led,,w1_041
+U13,A-LED,TopLayer,SK6812_SIDE,15.7443,4.9946,330,SK6812 SIDE-A Addressable led,,w1_041
+U12,A-LED,TopLayer,SK6812_SIDE,27.1088,1.372,354,SK6812 SIDE-A Addressable led,,w1_041
+U11,A-LED,TopLayer,SK6812_SIDE,39.062,2.6936,18,SK6812 SIDE-A Addressable led,,w1_041
+U10,A-LED,TopLayer,SK6812_SIDE,49.3008,8.6593,42,SK6812 SIDE-A Addressable led,,w1_041
+U9,A-LED,TopLayer,SK6812_SIDE,56.296,18.3426,66,SK6812 SIDE-A Addressable led,,w1_041
+U8,A-LED,TopLayer,SK6812_SIDE,58.7617,30.0584,90,SK6812 SIDE-A Addressable led,,w1_041
+U7,A-LED,TopLayer,SK6812_SIDE,56.2577,41.7569,114,SK6812 SIDE-A Addressable led,,w1_041
+U6,A-LED,TopLayer,SK6812_SIDE,49.1864,51.4286,138,SK6812 SIDE-A Addressable led,,w1_041
+U5,A-LED,TopLayer,SK6812_SIDE,38.7843,57.3864,162,SK6812 SIDE-A Addressable led,,w1_041
+U4,A-LED,TopLayer,SK6812_SIDE,26.9031,58.6043,186,SK6812 SIDE-A Addressable led,,w1_041
+U3,A-LED,TopLayer,SK6812_SIDE,15.5474,54.8717,210,SK6812 SIDE-A Addressable led,,w1_041
+U2,A-LED,TopLayer,SK6812_SIDE,6.6881,46.8534,234,SK6812 SIDE-A Addressable led,,w1_041
+U1,A-LED,TopLayer,SK6812_SIDE,1.8099,35.8892,258,SK6812 SIDE-A Addressable led,,w1_041
+R1,Res,TopLayer,0603_res,50.6244,20.9944,90,Resistor,1.2M,w1_023
+H1,9PIN,TopLayer,HEADER_9PIN,53.7994,30.0169,270,Header 9PIN,,unloaded
+Encoder1,Rotary encoder (Hall sensor),TopLayer,ROTARY_ENCODER_30,7.3981,29.9944,90,Rotary encoder (Hall sensor),,unloaded

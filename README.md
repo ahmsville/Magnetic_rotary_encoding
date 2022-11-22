@@ -5,7 +5,7 @@
  - https://youtu.be/_1tGosBLRB0
 
 # Hardware Options
- # 1. Standalone magnetic rotary encoder with a base resolution of 72, extendable up to 72000 steps per revolution
+ ## 1. Standalone magnetic rotary encoder with a base resolution of 72, extendable up to 72000 steps per revolution
  
  # Supported Boards / Platform:
 

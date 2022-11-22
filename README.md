@@ -5,12 +5,40 @@
  - https://youtu.be/_1tGosBLRB0
 
 # Hardware Options
- ## 1. Standalone Magnetic Rotary Encoder 
- This is standalone encoder made to connect to a seperate microcontroller like an Arduino board, this version has a base resolution of 72, extendable up to 72000 steps per revolution
+ ## 1. Magnetic Rotary Encoder 
+ This is standalone encoder made to connect to a seperate microcontroller like an Arduino board, this version has a base resolution of 72, extendable up to 72000 steps per revolution.
+ ### Features:
+- Capacitive touch / button input
+- Addressable Led ring (18 LEDs)
  ### Supported Boards / Platform:
 - **All Arduino Boards** 
 - **Raspberry Pi Pico C/C++ SDK** 
 - **All Micropython-Supported Boards**
+
+## 2. Magnetic Rotary Encoder MINI 
+ This is standalone encoder similar to the first option, only with a small form factor, this version has a base resolution of 36, extendable up to 36000 steps per revolution.
+  ### Features:
+- Capacitive touch / button input
+- Addressable Led ring (12 LEDs)
+ ### Supported Boards / Platform:
+- **All Arduino Boards** 
+- **Raspberry Pi Pico C/C++ SDK** 
+- **All Micropython-Supported Boards**
+
+## 3. Pico Dev M3 
+ This is a full fledged development board combined with the magnetic rotary encoder, its built with the Raspberry Pi RP2040 microcontroller chip with a base resolution of 36, extendable up to 36000 steps per revolution.
+  ### Features:
+- RP2040 chip, Dual-core Arm Cortex-M0+ processor at 133 MHz
+- 264kB on-chip SRAM
+- 2MB on-board QSPI flash
+- 19 multifunction GPIO pins, with 2 analogue inputs
+- USB type C
+- Lipo charging
+- Button input
+- Addressable Led ring (18 LEDs)
+ ### Supported Platform:
+- **C/C++ SDK** 
+- **Micropython**
  
 
 # How to connect and use the [Ahmsville labs magnetic rotary encoder](https://www.tindie.com/products/22156/).

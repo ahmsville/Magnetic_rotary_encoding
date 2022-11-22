@@ -7,7 +7,7 @@
 # Hardware Options
  ## 1. Standalone magnetic rotary encoder with a base resolution of 72, extendable up to 72000 steps per revolution
  
- # Supported Boards / Platform:
+ ### Supported Boards / Platform:
 
 - **All Arduino Boards** 
 - **Raspberry Pi Pico C/C++ SDK** 

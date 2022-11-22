@@ -5,10 +5,9 @@
  - https://youtu.be/_1tGosBLRB0
 
 # Hardware Options
- ## 1. **Standalone magnetic rotary encoder** with a base resolution of 72, extendable up to 72000 steps per revolution
- 
+ ## 1. Standalone Magnetic Rotary Encoder 
+ This is standalone encoder made to connect to a seperate microcontroller like an Arduino board, this version has a base resolution of 72, extendable up to 72000 steps per revolution
  ### Supported Boards / Platform:
-
 - **All Arduino Boards** 
 - **Raspberry Pi Pico C/C++ SDK** 
 - **All Micropython-Supported Boards**

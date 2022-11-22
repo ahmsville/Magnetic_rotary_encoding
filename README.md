@@ -5,14 +5,14 @@
  - https://youtu.be/_1tGosBLRB0
 
 # Hardware Options
- - Standalone magnetic rotary encoder with a base resolution of 72, extendable up to 72000 steps per revolution
- ### **Supported Boards / Platform:**
+ # 1) Standalone magnetic rotary encoder with a base resolution of 72, extendable up to 72000 steps per revolution
+ 
+ ## **Supported Boards / Platform:**
 
 - **All Arduino Boards** 
 - **Raspberry Pi Pico C/C++ SDK** 
 - **All Micropython-Supported Boards**
  
- - https://youtu.be/_1tGosBLRB0
 
 # How to connect and use the [Ahmsville labs magnetic rotary encoder](https://www.tindie.com/products/22156/).
 

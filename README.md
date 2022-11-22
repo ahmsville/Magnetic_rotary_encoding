@@ -7,6 +7,8 @@
 # Hardware Options
  ## 1. Magnetic Rotary Encoder 
  This is standalone encoder made to connect to a seperate microcontroller like an Arduino board, this version has a base resolution of 72, extendable up to 72000 steps per revolution.
+ ![magnetic rotary encoder pinout](https://user-images.githubusercontent.com/44074914/203219750-86ac2589-ea35-4c4b-ab05-d7d815c035d1.jpg)
+
  ### Features:
 - Capacitive touch / button input
 - Addressable Led ring (18 LEDs)
@@ -17,6 +19,8 @@
 
 ## 2. Magnetic Rotary Encoder MINI 
  This is standalone encoder similar to the first option, only with a small form factor, this version has a base resolution of 36, extendable up to 36000 steps per revolution.
+ ![magnetic rotary encoder mini pinout](https://user-images.githubusercontent.com/44074914/203219824-10afe29c-3185-4d1e-af02-9a617c7a373d.jpg)
+
   ### Features:
 - Capacitive touch / button input
 - Addressable Led ring (12 LEDs)
@@ -27,6 +31,8 @@
 
 ## 3. Pico Dev M3 
  This is a full fledged development board combined with the magnetic rotary encoder, its built with the Raspberry Pi RP2040 microcontroller chip with a base resolution of 36, extendable up to 36000 steps per revolution.
+ ![pico dev m3 pinout](https://user-images.githubusercontent.com/44074914/203219878-a4c1ef38-1bd1-422d-a1e1-6ec71f0708a7.jpg)
+
   ### Features:
 - RP2040 chip, Dual-core Arm Cortex-M0+ processor at 133 MHz
 - 264kB on-chip SRAM

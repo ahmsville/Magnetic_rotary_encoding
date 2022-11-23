@@ -37,13 +37,13 @@
 - RP2040 chip, Dual-core Arm Cortex-M0+ processor at 133 MHz
 - 264kB on-chip SRAM
 - 2MB on-board QSPI flash
-- 19 multifunction GPIO pins, with 2 analogue inputs
+- 19 multifunction GPIO pins, with 2 analog inputs
 - 2 UARTs
--2 SPI controllers
--2 I2C controllers
--16 PWM channels
--USB 1.1 controller with host and device support
--8 PIO state machines
+- 2 SPI controllers
+- 2 I2C controllers
+- 16 PWM channels
+- USB 1.1 controller with host and device support
+- 8 PIO state machines
 - USB type C
 - Lipo charging
 - onboard Button input

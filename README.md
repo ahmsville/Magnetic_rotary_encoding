@@ -38,12 +38,18 @@
 - 264kB on-chip SRAM
 - 2MB on-board QSPI flash
 - 19 multifunction GPIO pins, with 2 analogue inputs
+- 2 UARTs
+-2 SPI controllers
+-2 I2C controllers
+-16 PWM channels
+-USB 1.1 controller with host and device support
+-8 PIO state machines
 - USB type C
 - Lipo charging
-- Button input
+- onboard Button input
 - Addressable Led ring (18 LEDs)
  ### Supported Platform:
-- **C/C++ SDK** 
+- **RP2040 C/C++ SDK** 
 - **Micropython**
  
 

@@ -1,3 +1,7 @@
+# PICO DEV M3
+
+![20221123_113742_1](https://user-images.githubusercontent.com/44074914/203675239-e666f68e-3007-4da6-83f4-6276f0353171.jpg)
+
 
 The **Pico Dev M3** is a development board based on Raspberry Pi's **RP2040 microcontrolle**r chip, the board is also a high-resolution **magnetic rotary encoder** when paired with a few 3D printed parts, which makes this the perfect board for applications and projects that can benefit from having a rotary encoder, a good example is making macro pads, and other similar secondary controllers.
 

@@ -33,7 +33,7 @@
 - **Raspberry Pi Pico C/C++ SDK** 
 - **All Micropython-Supported Boards**
 
-## 3. Pico Dev M3 
+![## 3. Pico Dev M3](https://github.com/ahmsville/Magnetic_rotary_encoding/tree/master/PICO%20DEV%20M3) 
  This is a full fledged development board combined with the magnetic rotary encoder, its built with the Raspberry Pi RP2040 microcontroller chip with a base resolution of 36, extendable up to 36000 steps per revolution.
  ![pico dev m3 pinout](https://user-images.githubusercontent.com/44074914/203219878-a4c1ef38-1bd1-422d-a1e1-6ec71f0708a7.jpg)
 

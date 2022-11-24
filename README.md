@@ -5,6 +5,10 @@
  - https://youtu.be/_1tGosBLRB0
 
 # Hardware Options
+
+![20221123_121114_1_2](https://user-images.githubusercontent.com/44074914/203674976-3df1c4c8-059c-41ee-829a-2071c43a109a.jpg)
+
+
  ## 1. Magnetic Rotary Encoder 
  This is standalone encoder made to connect to a seperate microcontroller like an Arduino board, this version has a base resolution of 72, extendable up to 72000 steps per revolution.
  ![magnetic rotary encoder pinout](https://user-images.githubusercontent.com/44074914/203219750-86ac2589-ea35-4c4b-ab05-d7d815c035d1.jpg)

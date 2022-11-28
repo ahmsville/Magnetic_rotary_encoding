@@ -8,7 +8,7 @@ The **Pico Dev M3** is a development board based on Raspberry Pi's **RP2040 micr
 ## **Board Features**
 - RP2040 chip, Dual-core Arm Cortex-M0+ processor at 133 MHz
 - 264kB on-chip SRAM
-- 2MB on-board QSPI flash
+- 128Mb on-board QSPI flash
 - 19 multifunction GPIO pins, with 2 analog inputs
 - 2 UARTs
 - 2 SPI controllers

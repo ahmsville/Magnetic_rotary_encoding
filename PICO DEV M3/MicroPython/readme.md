@@ -1,3 +1,5 @@
+# Pico Dev M3 Micropython Setup
+
 ## Step 1
 
 Download the micropython uf2 firmware for the raspberry pi pico [**here**](https://micropython.org/download/rp2-pico/), and copy it into the pico dev m3.

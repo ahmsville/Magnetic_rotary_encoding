@@ -1,10 +1,12 @@
 # Pico Dev M3 Micropython Setup
 
+The board will come with a default firmware loaded, so you should be able to just connect it to a computer and seeing the output from a serial terminal like putty or arduino's serial monitor. The default firmware is in C/C++ and you can download the UF2 file [**here.**](https://github.com/ahmsville/Magnetic_rotary_encoding/tree/master/PICO%20DEV%20M3/C-C%2B%2B%20SDK/PICO%20DEV%20M3/build) 
+
 ## Step 1
 
 Download the micropython uf2 firmware for the raspberry pi pico [**here**](https://micropython.org/download/rp2-pico/), and copy it into the pico dev m3.
 
-To get the pico dev m3 to show up as a storage device on the computer, connect to the board via the usb type c port while holding the BOOTSEL button at the back of the pico dev m3 board, reference the pinout diagram.
+To get the pico dev m3 to show up as a storage device on the computer, connect to the board via the usb type c port while holding the BOOTSEL button at the back of the board, reference the pinout diagram.
 
 ## Step 2
 

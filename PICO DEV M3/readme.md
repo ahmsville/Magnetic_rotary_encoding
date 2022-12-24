@@ -37,19 +37,21 @@ The **Pico Dev M3** is a development board based on Raspberry Pi's **RP2040 micr
 
 ### **Encoder Assembly:**
 
-- Sandwich the pico dev m3 board between the BOARD BUTTON and BOARD TOP 3D printed parts, and secure them together using 3 M1.4x6mm self-tapping screws.
+- Sandwich the pico dev m3 board between the **BOARD BUTTON** and **BOARD TOP** 3D printed parts, and secure them together using 3 **M1.4x6mm** self-tapping screws.
 ![Capture](https://user-images.githubusercontent.com/44074914/209444073-41d47224-8d91-4deb-9c0e-4a108ad13419.PNG)
 ![CaptureXCXC](https://user-images.githubusercontent.com/44074914/209444082-f9c58404-2e73-40fc-9cee-b183f6893c2f.PNG)
 
-- Attach 608 bearing (8x22x7) to the assembly and secure it with the BEARING HOLDER part and 1 M2x8mm self-tapping screw.
+- Attach **608 bearing (8x22x7)** to the assembly and secure it with the **BEARING HOLDER** part and 1 **M2x8mm** self-tapping screw.
 ![CapturZDCe](https://user-images.githubusercontent.com/44074914/209444088-0e20827a-11f1-461a-a567-2288d2ee2eeb.PNG)
 
-- Install (18pcs) 3x1mm neodymium magnets to the KNOB in an alternating pole configuration.
+- Install **(18pcs) 3x1mm** neodymium magnets to the KNOB in an alternating pole configuration.
 Depending on your 3D printer's tolerance you may use super glue to secure the magnets, but if the holes turn out as the perfect size, a simple press-fit is sufficient.
 ![CaptuGGre](https://user-images.githubusercontent.com/44074914/209444094-9ce0751e-0a48-4a63-bfd8-c88e86bd2d27.PNG)
 
 - Attach the knob to the bearing.
 ![CaptFHNFure](https://user-images.githubusercontent.com/44074914/209444101-c25a82e6-112c-44c5-989e-ac1bcc06dd92.PNG)
 
-- For Flexibility, you may print the BUTTON BASE file this allows the pico dev m3 encoder and button to be used conviniently.
+- For Flexibility, you may print the **BUTTON BASE** file this allows the pico dev m3 encoder and button to be used conviniently, the button base attaches to the pico dev encoder via 2 **M2x8mm** selftapping screws.
+![Capgfgture](https://user-images.githubusercontent.com/44074914/209444385-965c41aa-b64a-484c-81ef-a5a061b4b158.PNG)
+
 

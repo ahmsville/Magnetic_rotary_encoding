@@ -1,1 +1,2 @@
 
+To use the C/C++ code for the pico dev m3, you should alredy have your computer setup to program a Raspberry pi pico using the C/C++ SDK, if not, i recommend watching this [video from Learn Embedded Systems](https://www.youtube.com/watch?v=mUF9xjDtFfY) or you can follow the official instructions at [**Raspberry Pi Documentation.**](https://www.raspberrypi.com/documentation/microcontrollers/c_sdk.html)

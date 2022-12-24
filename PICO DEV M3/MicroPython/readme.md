@@ -1,6 +1,7 @@
 ## Step 1
 
-Download the micropython uf2 firmware for the raspberry pi pico [**here**](https://micropython.org/download/rp2-pico/), and copy it into pico dev m3
+Download the micropython uf2 firmware for the raspberry pi pico [**here**](https://micropython.org/download/rp2-pico/), and copy it into the pico dev m3.
+
 To get the pico dev m3 to show up as a storage device on the computer, connect to the board via the usb type c port while holding the BOOTSEL button at the back of the pico dev m3 board, reference the pinout diagram.
 
 ## Step 2

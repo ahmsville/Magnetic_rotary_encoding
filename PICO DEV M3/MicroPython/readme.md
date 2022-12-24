@@ -1,6 +1,6 @@
 # Pico Dev M3 Micropython Setup
 
-The board will come with a default firmware loaded, so you should be able to just connect it to a computer and seeing the output from a serial terminal like putty or arduino's serial monitor. The default firmware is in C/C++ and you can download the UF2 file [**here.**](https://github.com/ahmsville/Magnetic_rotary_encoding/tree/master/PICO%20DEV%20M3/C-C%2B%2B%20SDK/PICO%20DEV%20M3/build) 
+The board will come with a default firmware loaded, so you should be able to just connect it to a computer and see the output from a serial terminal like putty or arduino's serial monitor. The default firmware is in C/C++ and you can download the UF2 file [**here.**](https://github.com/ahmsville/Magnetic_rotary_encoding/tree/master/PICO%20DEV%20M3/C-C%2B%2B%20SDK/PICO%20DEV%20M3/build) 
 
 ## Step 1
 

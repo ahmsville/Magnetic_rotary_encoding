@@ -9,3 +9,16 @@ open MagneticRotaryEncoder.py in thonny ide, go to file, save copy, thonny will 
 ## Step 3
 open MagEncoder Example.py in a new thonny ide window or tab, click on run script, the pico dev m3 led ring should turn on and you will see the encoder's counting value in thonny's terminal/shell as you rotate the knob on the pico dev m3. 
 ![Capturxfdfe](https://user-images.githubusercontent.com/44074914/209449919-84f3bfc9-86c3-4b74-a000-f64df2c11143.PNG)
+
+Changing the encoding method used on the board.
+
+```python
+#ENCMODE = 1 # BASE RESOLUTION ANALOG ONLY
+#ENCMODE  = 2 # BASE RESOLUTION ANALOG ONLY ABSOLUTE POSITIONING
+#ENCMODE  = 3 # EXTENDED RESOLUTION ANALOG ONLY
+#ENCMODE  = 4 # BASE RESOLUTION ANALOG AND DIGITAL
+#ENCMODE  = 5 # BASE RESOLUTION ANALOG AND DIGITAL ABSOLUTE POSITIONING
+#ENCMODE  = 6 # EXTENDED RESOLUTION ANALOG AND DIGITAL
+ENCMODE  = 7 # BASE RESOLUTION DIGITAL ONLY
+#ENCMODE  = 8 # BASE RESOLUTION DIGITAL ONLY ABSOLUTE POSITIONING
+```

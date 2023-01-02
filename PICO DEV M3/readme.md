@@ -35,6 +35,9 @@ The **Pico Dev M3** is a development board based on Raspberry Pi's **RP2040 micr
 - **RP2040 C/C++ SDK** 
 - **Micropython**
 
+![pico dev m3 pinout](https://user-images.githubusercontent.com/44074914/210262617-3780ce25-4f13-4e42-bd19-e370b2e2f230.jpg)
+
+
 ### **Encoder Assembly:**
 
 - Sandwich the pico dev m3 board between the **BOARD BUTTON** and **BOARD TOP** 3D printed parts, and secure them together using 3 **M1.4x6mm** self-tapping screws.

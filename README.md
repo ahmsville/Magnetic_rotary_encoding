@@ -1,6 +1,7 @@
 # Magnetic_Rotary_Encoding
 
 ## Learn more about this project - 
+ - https://www.ahmsvillelabs.io/projects/magnetic-rotary-encoding
  - https://youtu.be/atb6d4b-VYk
  - https://youtu.be/_1tGosBLRB0
 

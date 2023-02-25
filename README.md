@@ -5,6 +5,9 @@
  - https://youtu.be/atb6d4b-VYk
  - https://youtu.be/_1tGosBLRB0
 
+## BUILD INSTRUCTIONS
+ - https://www.ahmsvillelabs.io/magnetic-rotary-encoderbuild
+
 # Hardware Options
 
 ![20221123_121114_1_2](https://user-images.githubusercontent.com/44074914/203674976-3df1c4c8-059c-41ee-829a-2071c43a109a.jpg)

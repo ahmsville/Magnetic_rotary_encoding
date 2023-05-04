@@ -37,7 +37,8 @@ The **Pico Dev M3** is a development board based on Raspberry Pi's **RP2040 micr
 
 ![pico dev m3 pinout](https://user-images.githubusercontent.com/44074914/210262617-3780ce25-4f13-4e42-bd19-e370b2e2f230.jpg)
 
-### **Sample Designs Based on the PICO DEV M3:**
+## **Sample Designs Based on the PICO DEV M3:**
+
 
 ![ZVE00216 (3)](https://user-images.githubusercontent.com/44074914/236347845-b50baea9-03aa-4949-9894-49093bf09b79.JPG)
 

@@ -37,6 +37,13 @@ The **Pico Dev M3** is a development board based on Raspberry Pi's **RP2040 micr
 
 ![pico dev m3 pinout](https://user-images.githubusercontent.com/44074914/210262617-3780ce25-4f13-4e42-bd19-e370b2e2f230.jpg)
 
+### **Sample Designs Based on the PICO DEV M3:**
+
+- **Pico Dev M3 Keypad** 
+This is a 12-key macropod that uses the Pico dev m3 as its controller, the breakout board features backlit keys, headers for connecting I2C, SPI, and UART peripherals, and a header for connecting a joystick module to the Pico dev m3, you can power the keypad from the type c port on the pico dev m3 board or with a Lipo battery connected to the BAT header, taking advantage of the Lipo charge controller built into the pico dev m3.
+- **PIO Stepper Controller**
+This breakout board allows you to use this Programmable IO (PIO) on the RP2040 chip on Pico dev m3 to individually control 3 stepper motors. This board can be used to control any 3-axis motion system, robot, or custom mechanism.
+
 ## BUILD INSTRUCTIONS
  - https://www.ahmsvillelabs.io/magnetic-rotary-encoderbuild/pico-dev-m3
 

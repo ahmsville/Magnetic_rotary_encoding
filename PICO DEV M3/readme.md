@@ -51,7 +51,7 @@ This is a 12-key macropod that uses the Pico dev m3 as its controller, the break
 
 ![ZVE00231 (2)](https://user-images.githubusercontent.com/44074914/236347603-74c1dc2a-cb5c-43a8-9ec1-ef19d36aa6cb.JPG)
 
-This breakout board allows you to use this Programmable IO (PIO) on the RP2040 chip on Pico dev m3 to individually control 3 stepper motors. This board can be used to control any 3-axis motion system, robot, or custom mechanism.
+This breakout board allows you to use this Programmable IO (PIO) on the RP2040 chip on the Pico dev m3 to individually control 3 stepper motors. This board can be used to control any 3-axis motion system, robot, or custom mechanism.
 
 ## BUILD INSTRUCTIONS
  - https://www.ahmsvillelabs.io/magnetic-rotary-encoderbuild/pico-dev-m3
